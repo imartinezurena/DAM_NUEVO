@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!--
+    <h1>Esto es mi primera web</h1>
+    Nombre<input type="text" name="datosPersonales" id="nombre">
+    Apellido<input type="text" name="datosPersonales" id="apellido">
+
+    <input type="submit" name="enviar" id ="boton">
+-->
+<h1>esto es mi primera web</h1>
+
+<ul id="1">
+<li><a href="https://www.google.com/search?q=primero">Primero</a></li>
+<br>
+<li><a href="https://www.google.com/search?q=segundo">Segundo</a></li>
+<br>
+<li><a href="https://www.google.com/search?q=tercero">Tercero</a></li>
+</ul>
+<p>Esto es el primer parrafo</p>
+<p>Esto es el segundo parrafo</p>
+
+
+
+<input type="submit" value="Cambiar Parrafo" id ="cambiarParrafo">
+<input type="submit" value="Cambiar enlace" id ="cambiarEnlace">
+<input type="button" value="consola" id ="consola">
+<input type="button" value="boton" id ="boton">
+
+<div id="padre"></div>
+<br>
+marca<input type="text" value=""id="marca">
+modelo<input type="text" id="modelo">
+
+<input type="submit" value="submit" id="metela">
+<ul id="2"></ul>
+</body>
+
+<script>
+    document.getElementById("boton").addEventListener("click",saludar)
+    function saludar(){
+        padre=document.getElementById("padre")
+        imagen=document.createElement("img")
+        imagen.setAttribute("src","https://www.ejemplos.co/wp-content/uploads/2021/09/iconos-e1633369929332.png")
+        padre.appendChild(imagen)
+    }
+   
+    document.getElementById("cambiarParrafo").addEventListener("click",cambParr) 
+    function cambParr(){
+        cadena = window.prompt("Que quieres que ponga")
+        document.getElementsByTagName("p")[0].innerHTML=cadena
+    }
+
+    
+    document.getElementById("cambiarEnlace").addEventListener("click",camEn)
+    function camEn(){
+        cadena = window.prompt("Que quieres que ponga")
+        document.getElementsByTagName("a")[2].href="https://www."+cadena
+        document.getElementsByTagName("a")[2].innerHTML="Tercero cambiado"
+    }
+
+    document.getElementById("consola").addEventListener("click",mover)
+    function mover(){
+        //parrafos=document.getElementsByTagName("a")
+        padre=document.getElementById("padre")
+        for(var i=0;i<3;i++){
+            lista=document.createElement("li")
+            lista.innerHTML=document.getElementsByTagName("li")[i].innerHTML
+            //lista.setAttribute("value","https://www.google.com/search?q=primero")
+            padre.appendChild(lista)
+        }
+        
+        lista=document.getElementById("1")
+
+    }
+    document.getElementById("metela").addEventListener("click",metela)
+    function metela(){
+        marca=document.getElementById("marca").value
+        modelo=document.getElementById("modelo").value
+        padre=document.getElementById("2")
+        Elemento=document.createElement("li")
+        Elemento.innerText=marca+" "+modelo
+        padre.appendChild(Elemento)
+        document.getElementById("marca").value=""
+        document.getElementById("modelo").value=""
+
+    }
+
+    /*document.getElementById("boton").addEventListener("click",saludar)
+    function saludar() {
+      // cadena = window.prompt("Que quieres que ponga")
+      // document.getElementsByTagName("input")[2].value=cadena
+        alert(document.getElementsByName("input")[0].value +
+        document.getElementsByName("input")[1].value)
+    }*/
+</script>
+
+</html>
