@@ -9,4 +9,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="press">Appuyez sur moi</string>
+    <string name="mayorClue">mayonnaise</string>
+    <string name="menorClue">menoire</string>
+    <string name="VictoryClue">victoire</string>
 </resources>

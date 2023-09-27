@@ -8,5 +8,8 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="press">Púlsame</string>
+    <string name="mayorClue">el numero secreto es mayor que </string>
+    <string name="menorClue">el numero secreto es menor que </string>
+    <string name="VictoryClue">has acertado</string>
 
 </resources>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body></body>
+<script>
+    concesionario = {
+        vehiculo: [
+            {
+                marca: "ford",
+                modelo: "fiesta",
+                tipo: "familiar",
+                potencia: "90",
+                color: "rojo",
+                "cambios aceite": [
+                    {
+                        kms: 1000,
+                        s: 200,
+                    },
+                    {
+                        kms: 200,
+                        s: 1000,
+                    },
+                ],
+            },
+            {
+                marca: "seat",
+                modelo: "panda",
+                tipo: "familiar",
+                potencia: "80",
+                color: "azul",
+                "cambios aceite": [
+                    {
+                        kms: 1000,
+                        s: 200,
+                    },
+                    {
+                        kms: 200,
+                        s: 1000,
+                    },
+                ],
+            },
+        ],
+    };
+    console.log(concesionario.vehiculo[0].marca)
+</script>
+
+</html>
