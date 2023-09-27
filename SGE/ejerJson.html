@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="añadir" id ="boton">  
+    <input type="button" value="listar" id ="btListar">    
+    nombre<input type="text" value=""id="nombre">
+    apellido<input type="text" id="apellido">
+    edad<input type="text" id="edad">
+    <br>
+    estado civil
+    <input type="radio" id="soltero"name="estadoCivil">
+    <label for="soltero">soltero</label>
+    <input type="radio" id="casado" name="estadoCivil">
+    <label for="casado">casado</label>
+    <div id="padre"></div>
+
+</body>
+<script>
+    let arrayPersonas=[];
+document.getElementById("boton").addEventListener("click",añadir)
+    function añadir(){
+        var estado=document.getElementsByName("estadoCivil")
+        var estCivil;
+        if (estado[0].checked){
+            estCivil="soltero"
+        }      
+        if (estado[1].checked){
+            estCivil="casado"
+        }
+        arrayPersonas.push(
+            persona={
+                "nombre":document.getElementById("nombre").value,
+                "apellido":document.getElementById("apellido").value,
+                "edad":document.getElementById("edad").value,
+                "estado civil":estCivil,
+            }
+        )
+        console.log(arrayPersonas)
+    }
+    document.getElementById("btListar").addEventListener("click",listar)
+    function listar(){
+        padre=document.getElementById("padre")
+        padre.appendChild()
+    }
+
+</script>
+</html>
