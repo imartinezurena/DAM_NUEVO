@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    nombre pokemon <input type="text" id="poke">
+    <input type="button"id="buscar" value="buscar">
+    <div id="padre"></div>
+    
+</body>
+<script>
+   
+    document.getElementById("buscar").addEventListener("click",mostrar)
+    function mostrar(){
+        url='https://pokeapi.co/api/v2/pokemon/'+poke.value
+    fetch(url)
+    .then(response => response.json())
+
+    .then(data=> formatear(data));
+
+    }
+
+    
+    function formatear(datos){
+        console.log(datos.name)
+        console.log(datos.types[0].type.name)
+       datos.stats.forEach(stat=> console.log(stat.base_stat+ " "+stat.stat.name))
+       console.log("MOVIMIENTOS")
+       i=0;
+       while(i<5){
+        console.log(datos.moves[i].move.name+" "+datos.moves[i].version_group_details[0].level_learned_at)
+        i++;
+       }
+       
+       padre=document.getElementById("padre")
+        imagen=document.createElement("img")
+        foto=document.createElement("img")
+                imagen.setAttribute("src",datos.sprites.front_default)
+                foto.setAttribute("src",datos.sprites.back_default)
+                padre.appendChild(imagen)
+                padre.appendChild(foto)
+
+        /*datos.stats.forEach(sprites=> console.log(stat.base_stat+ " "+stat.stat.name))
+        */
+       
+    }
+    
+</script>
+</html>
