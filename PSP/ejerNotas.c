@@ -15,7 +15,7 @@ La nota media, la nota más alta y la nota más baja.*/
     //int minimo 5;
     notas[5]=11;
     //int maximo 6; 
-    notas[6]=0;
+    notas[6]=0 ;
     //int media 7;
     int numeroExamenes = 5;
     for(int i=0;i<numeroExamenes;i++)
