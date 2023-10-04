@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdbool.h>
+#include <stdio.h> 
+#include <string.h>
+#include <stdbool.h>
 #define BUFFER 1024
 
 int main (void) 

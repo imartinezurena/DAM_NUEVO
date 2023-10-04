@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    palabra <input type="text" id="entrada">
+    <input type="button"id="translate" value="translate">
+    <div id="padre"></div>
+    <input type="text" value=""id="marca">
+</body>
+<script>
+
+
+
+document.getElementById("translate").addEventListener("click",traducir)
+    
+
+
+    function traducir(){
+
+        const url = 'https://google-translate1.p.rapidapi.com/language/translate/v2';
+const options = {
+	method: 'POST',
+	headers: {
+		'content-type': 'application/x-www-form-urlencoded',
+		'Accept-Encoding': 'application/gzip',
+		'X-RapidAPI-Key': '479fda2fcemshb58fe532dd41e6dp1b692bjsn6c514919b93d',
+		'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
+	},
+	body: new URLSearchParams({
+		q: document.getElementById("entrada").value ,
+		target: 'es',
+		source: 'en'
+	})
+};
+        
+
+fetch(url , options)
+    .then(response => response.json())
+    .then(data=> pintar(data));
+    }
+
+    function pintar(dato){
+        document.getElementById("marca").value=dato.data.translations[0].translatedText;
+    }
+    
+
+
+</script>
+</html>
