@@ -2,6 +2,10 @@
 #include<unistd.h>
 #include<sys/types.h>
 
+int esPrimo(int n){
+    return 0;
+}
+
 int main(void){
     pid_t id;
 
