@@ -4,6 +4,8 @@
  */
 package proyectoparabd;
 
+import java.sql.*;
+
 /**
  *
  * @author at5DAM2
@@ -15,6 +17,9 @@ public class ProyectoparaBD {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-    }
+   
     
+}
+    
+   
 }

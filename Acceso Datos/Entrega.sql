@@ -219,6 +219,57 @@ BEGIN
     close c;
 END;
 /
+--ejercicio7
+DROP TABLE unitSold;
+
+CREATE TABLE unitSold (
+   producto number (10),
+   cantidad number (20)
+);
+declare
+pedidos sales_order.order_id%type;
+codigo sales_order.customer_id%type;
+cursor c1 is
+select product_id , (quantity+10) from item where order_id in(
+select order_id from sales_order where customer_id=208);
+
+begin
+open c1;
+fetch c1 into codigo, pedidos;
+while c1%found loop
+insert into unitSold values (codigo, pedidos);
+fetch c1 into codigo, pedidos;
+end loop;
+close c1;
+
+end;
+/
+--ejercicio 8
+CREATE OR REPLACE PROCEDURE anadepedidos (
+    idart      NUMBER,
+    cantidad   NUMBER,
+    codcli     NUMBER
+) IS
+    cod_ped item.order_id%TYPE;
+BEGIN
+    SELECT
+        MAX(item.order_id) + 1
+    INTO cod_ped
+    FROM
+        item;
+
+    INSERT INTO sales_order VALUES (
+        cod_ped,
+        sysdate,
+        codcli,
+        sysdate,
+        cantidad
+    );
+
+END anadepedidos;
+/
+-- ejercicio 9
+
 
 
 
