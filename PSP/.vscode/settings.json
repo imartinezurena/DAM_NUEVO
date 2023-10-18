@@ -1,4 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "enabled",
-    "C_Cpp.default.compilerPath": "d:\\TinyCCompiler\\tcc\\tcc.exe"
+    "C_Cpp.default.compilerPath": "d:\\TinyCCompiler\\tcc\\tcc.exe",
+    "files.associations": {
+        "string.h": "c"
+    }
 }

@@ -43,7 +43,7 @@ int main(void){
       printf("%d\t-\t%c\n", auxiliar, auxiliar);//imprimimos el número y el caracter
     }*/
 
-  for (i = 97; i < 123; i++)
+ for (i = 97; i < 123; i++)
   {
     for (a = 97; a < 123; a++)
     {
@@ -72,13 +72,14 @@ int main(void){
       }
     }
   }
+  
   for (i = 65; i < 123; i++)
   {
     for (a = 65; a < 123; a++)
     {
       for (b = 65; b < 123; b++)
       {
-        for (j = 65; j < 123; j++) // bucle for que recorre los caracteres ASCII
+        for (j = 65; j < 123; j++) 
         {
           for (d = 65; d < 123; d++) // bucle for que recorre los caracteres ASCII
         {
@@ -89,10 +90,10 @@ int main(void){
           contra[4] = d;
           generateMD5(contra, resultado);
           if(strcmp(resultado,"f4a1c8901a3d406f17af67144a3ec71a")==0){
-          printf("%s da %s \n", contra, result); // imprimimos el caracter
+          printf("%s da %s \n", contra, resultado); 
           }
           else if(strcmp(resultado,"d66e29062829e8ae0313adc5a673f863")==0){
-          printf("%s da %s \n", contra, result); // imprimimos el caracter
+          printf("%s da %s \n", contra, resultado); // imprimimos el caracter
           }
         }
       }
