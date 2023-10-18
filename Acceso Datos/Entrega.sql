@@ -269,6 +269,76 @@ BEGIN
 END anadepedidos;
 /
 -- ejercicio 9
+CREATE OR REPLACE PROCEDURE delpedidos (
+    codcli sales_order.customer_id%TYPE
+) IS
+BEGIN
+    DELETE FROM item
+    WHERE
+        order_id IN (
+            SELECT
+                order_id
+            FROM
+                sales_order
+            WHERE
+                customer_id = codcli
+        );
+    DELETE FROM sales_order
+    WHERE
+        customer_id = codcli;
+
+END delpedidos;
+/
+--ejercicio 10
+DROP TABLE temp;
+
+CREATE TABLE temp (
+    jobv    NUMBER(3, 0),
+    jobn    NUMBER(3, 0),
+    codemp  NUMBER(8, 0)
+);
+
+CREATE OR REPLACE PROCEDURE cambioempleo (
+    empleado  employee.employee_id%TYPE,
+    jobn      job.job_id%TYPE
+) IS
+    antiguo job.job_id%TYPE;
+BEGIN
+    SELECT
+        job_id
+    INTO antiguo
+    FROM
+        employee
+    WHERE
+        employee.employee_id = empleado;
+
+    UPDATE employee
+    SET
+        job_id = jobn
+    WHERE
+        employee_id = empleado;
+
+    INSERT INTO temp VALUES (
+        antiguo,
+        jobn,
+        empleado
+    );
+
+END cambioempleo;
+--ejercicio 11
+CREATE OR REPLACE FUNCTION anual (
+    mensualidad  employee.salary%TYPE,
+    comision     employee.commission%TYPE
+) RETURN NUMBER IS
+    anualidad NUMBER;
+BEGIN
+    anualidad := nvl(mensualidad, 0) * 12 + nvl(comision, 0) * 12;
+
+    RETURN anualidad;
+END anual;
+--ejercicio 12
+
+
 
 
 
