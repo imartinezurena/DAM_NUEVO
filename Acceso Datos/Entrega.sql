@@ -337,6 +337,40 @@ BEGIN
     RETURN anualidad;
 END anual;
 --ejercicio 12
+CREATE OR REPLACE PACKAGE actualiza IS
+    PROCEDURE altapedidos (
+        cantidad sales_order.total%TYPE
+    ) IS
+        pedido   sales_order.order_id%TYPE;
+        cliente  sales_order.customer_id%TYPE;
+    BEGIN
+        SELECT
+            MAX(order_id) + 1,
+            MAX(customer_id) + 1
+        INTO
+            pedido,
+            cliente
+        FROM
+            sales_order;
+        INSERT INTO sales_order VALUES (
+            pedido,
+            sysdate,
+            cliente,
+            sysdate,
+            cantidad
+        );
+
+    END altapedido;
+    
+    procedure bajapedidos(
+    order sales_order.order_id)
+    is
+    
+    begin
+    end bajapedido;
+
+END actualiza;
+
 
 
 
