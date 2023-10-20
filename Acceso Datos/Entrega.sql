@@ -337,21 +337,59 @@ BEGIN
     RETURN anualidad;
 END anual;
 --ejercicio 12
-CREATE OR REPLACE PACKAGE actualiza IS
+
+CREATE OR REPLACE PACKAGE actualiza AS
+    PROCEDURE altapedidos (
+        cantidad sales_order.total%TYPE
+    );
+
+    PROCEDURE bajapedidos (
+        codcli sales_order.customer_id%TYPE
+    );
+   /* Procedure tablaPedidos(
+    
+    
+    );
+    Procedure listar(
+    codigo_cli sales_order.customer_id,);*/
+    
+END actualiza;
+
+
+CREATE OR REPLACE PACKAGE BODY actualiza AS
+
+    PROCEDURE bajapedidos (
+        codcli sales_order.customer_id
+    ) IS
+    BEGIN
+        DELETE FROM sales_order
+        WHERE
+            order_id IN (
+                SELECT
+                    sales_order.order_id
+                FROM
+                    sales_order
+                WHERE
+                    sales_order.customer_id = codcli
+            );
+
+    END bajapedidos;
+
     PROCEDURE altapedidos (
         cantidad sales_order.total%TYPE
     ) IS
-        pedido   sales_order.order_id%TYPE;
-        cliente  sales_order.customer_id%TYPE;
+        cliente  sales_order.customer_id;
+        pedido   sales_order.order_id;
     BEGIN
         SELECT
-            MAX(order_id) + 1,
-            MAX(customer_id) + 1
+            MAX(sales_order.order_id) + 1,
+            MAX(sales_order.customer_id) + 1
         INTO
             pedido,
             cliente
         FROM
             sales_order;
+
         INSERT INTO sales_order VALUES (
             pedido,
             sysdate,
@@ -360,14 +398,7 @@ CREATE OR REPLACE PACKAGE actualiza IS
             cantidad
         );
 
-    END altapedido;
-    
-    procedure bajapedidos(
-    order sales_order.order_id)
-    is
-    
-    begin
-    end bajapedido;
+    END altapedidos;
 
 END actualiza;
 
