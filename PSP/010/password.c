@@ -42,7 +42,7 @@ int main(void){
     {
       printf("%d\t-\t%c\n", auxiliar, auxiliar);//imprimimos el número y el caracter
     }*/
-
+  
  for (i = 97; i < 123; i++)
   {
     for (a = 97; a < 123; a++)

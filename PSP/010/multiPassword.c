@@ -35,4 +35,67 @@ int main(void){
   char string[5] = {i, a, b, j, '\0'};
   char contra[6] = {i, a, b, j, d, '\0'};
    int auxiliar; 
+
+   pid_t tenedor;
+  tenedor=fork();
+  if(tenedor!=0){
+    for (i = 65; i < 90; i++)
+  {
+    for (a = 65; a < 123; a++)
+    {
+      for (b = 65; b < 123; b++)
+      {
+        for (j = 65; j < 123; j++) 
+        {
+          for (d = 65; d < 123; d++) // bucle for que recorre los caracteres ASCII
+        {
+          contra[0] = i;
+          contra[1] = a;
+          contra[2] = b;
+          contra[3] = j;
+          contra[4] = d;
+          generateMD5(contra, resultado);
+          if(strcmp(resultado,"f4a1c8901a3d406f17af67144a3ec71a")==0){
+          printf("%s da %s \n", contra, resultado); 
+          }
+          else if(strcmp(resultado,"d66e29062829e8ae0313adc5a673f863")==0){
+          printf("%s da %s \n", contra, resultado); // imprimimos el caracter
+          }
+        }
+      }
+    }
+  }
+}  
+        
+        
+    }else{
+      for (i = 97; i <123 ; i++)
+  {
+    for (a = 65; a < 123; a++)
+    {
+      for (b = 65; b < 123; b++)
+      {
+        for (j = 65; j < 123; j++) 
+        {
+          for (d = 65; d < 123; d++) // bucle for que recorre los caracteres ASCII
+        {
+          contra[0] = i;
+          contra[1] = a;
+          contra[2] = b;
+          contra[3] = j;
+          contra[4] = d;
+          generateMD5(contra, resultado);
+          if(strcmp(resultado,"f4a1c8901a3d406f17af67144a3ec71a")==0){
+          printf("%s da %s \n", contra, resultado); 
+          }
+          else if(strcmp(resultado,"d66e29062829e8ae0313adc5a673f863")==0){
+          printf("%s da %s \n", contra, resultado); // imprimimos el caracter
+          }
+        }
+      }
+    }
+  }
+}  
+        
+    }
 }
