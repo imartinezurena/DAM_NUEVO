@@ -401,6 +401,200 @@ CREATE OR REPLACE PACKAGE BODY actualiza AS
     END altapedidos;
 
 END actualiza;
+--ejercicio 13 no se adaptarlo a esta BD
+--ejercicio 14
+DROP TABLE temp;
+
+CREATE TABLE temp (
+    usuario      VARCHAR(50),
+    fecha        DATE,
+    descripcion  VARCHAR2(50),
+    mensaje      VARCHAR2(50)
+);
+
+CREATE OR REPLACE TRIGGER del_product BEFORE
+    DELETE ON product
+    FOR EACH ROW
+BEGIN
+    INSERT INTO temp VALUES (
+        user,
+        sysdate,
+        :new.description,
+        'producto borrado'
+    );
+
+END del_product;
+
+CREATE OR REPLACE TRIGGER mod_product BEFORE
+    UPDATE ON product
+    FOR EACH ROW
+BEGIN
+    INSERT INTO temp VALUES (
+        user,
+        sysdate,
+        :new.description,
+        'producto actualizado'
+    );
+
+END mod_product;
+
+CREATE OR REPLACE TRIGGER in_product BEFORE
+    INSERT ON product
+    FOR EACH ROW
+BEGIN
+    INSERT INTO temp VALUES (
+        user,
+        sysdate,
+        :new.description,
+        'producto añadido'
+    );
+
+END in_product;
+--ejercicio 15
+DROP TABLE temp;
+
+CREATE TABLE temp (
+    empleado  NUMBER,
+    mensaje   VARCHAR2(20)
+);
+
+CREATE OR REPLACE TRIGGER subidasalario AFTER
+    UPDATE OF salary ON employee
+    FOR EACH ROW
+BEGIN
+    IF (
+        updating('SALARY')
+        AND :new.salary > :old.salary
+    ) THEN
+        INSERT INTO temp VALUES (
+            :old.employee_id,
+            'salario subido'
+        );
+
+    END IF;
+END subidasalario;
+--ejercicio 16
+drop table temp;
+create table temp(
+empleado number,
+apellido varchar2(30),
+departamento number
+);
+
+create or replace trigger del_emp after delete on employee
+for each row 
+begin
+insert into temp values (
+:old.employee_id, :old.last_name, :old.department_id
+);
+end del_emp;
+--ejercicio 17 no se adaptarlo a esta BD
+--ejercicio 18
+drop table temp;
+create table temp(
+mensaje varchar (50)
+);
+create or replace procedure existencias
+is
+codigo customer.customer_id%type;
+begin
+codigo:='&cod';
+select * from customer where customer_id=codigo;
+insert into temp values('EXISTE');
+EXCEPTION
+when others then insert into temp values('NO EXISTE');
+end existencias;
+--ejercicio 19
+DROP TABLE temp;
+
+CREATE TABLE temp (
+    precio       NUMBER,
+    descripcion  VARCHAR2(50)
+);
+
+DECLARE
+    codigo    product.product_id%TYPE;
+    v_precio  temp.precio%TYPE;
+    v_des     temp.descripcion%TYPE;
+BEGIN
+    codigo := '&codigo';
+    SELECT
+        item.actual_price,
+        product.description
+    INTO
+        v_precio,
+        v_des
+    FROM
+        item,
+        product
+    WHERE
+        item.product_id = product.product_id
+        and item.product_id=codigo;
+
+    INSERT INTO temp VALUES (
+        v_precio,
+        v_des
+    );
+
+EXCEPTION
+    WHEN no_data_found THEN
+        raise_application_error(-20001, 'el producto de codigo '
+                                        || codigo
+                                        || ' no se ha pedido');
+END;
+--ejercicio 20
+DROP TABLE temp;
+
+CREATE TABLE temp (
+    tot_ped     NUMBER(8)NOT NULL,
+    precio_tot  NUMBER(8) NOT NULL,
+    cod_cli     NUMBER(8) NOT NULL,
+    nombre_cli  VARCHAR2(30) NOT NULL
+);
+
+DECLARE
+    codigo customer.customer_id%TYPE;
+    precio sales_order.total%type;
+    pedidos number;
+    nombre customer.name%type;
+    
+BEGIN 
+codigo := '&codigo'; 
+SELECT
+    sum(sales_order.total),
+    count(*),
+    customer.name
+INTO
+    precio,
+    pedidos,
+    nombre
+FROM
+    customer,
+    sales_order
+WHERE
+    customer.customer_id = sales_order.customer_id
+    and customer.customer_id=codigo
+    group by customer.customer_id, customer.name;
+    
+    insert into temp values(pedidos,precio,codigo,nombre);
+    exception 
+    when no_data_found then DBMS_OUTPUT.PUT_LINE('no existe el cliente');
+    
+    END;
+	--ejercicio 21
+	drop table temp;
+create table temp(
+id number,
+nombre varchar2(50)
+);
+create or replace trigger del_emp after delete on employee
+for each row
+begin
+insert into temp values(:old.employee_id, :old.first_name);
+end del_emp;
+
+
+
 
 
 
