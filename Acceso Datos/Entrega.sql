@@ -721,7 +721,66 @@ WHEN salario_nulo THEN
         raise_application_error(-20001, 'no tiene salario');
 end subidasalario;
 --ejercicio 27
+CREATE OR REPLACE PROCEDURE aumentarsueldoporoficio (
+    oficio employee.job_id%TYPE
+) IS
+    salariopromediooficio  NUMBER;
+    diferencia             NUMBER;
+    aumento                NUMBER;
+    salariomedionulo EXCEPTION;
+BEGIN
+    SELECT
+        AVG(salary)
+    INTO salariopromediooficio
+    FROM
+        employee
+    WHERE
+        job_id = oficio;
 
+    UPDATE employee
+    SET
+        salary = salary + ( 0.5 * ( salary - salariopromediooficio ) )
+    WHERE
+            job_id = oficio
+        AND salary < salariopromediooficio;
+
+EXCEPTION
+    WHEN salariomedionulo THEN
+        raise_application_error(-20002, 'no tiene salario');
+END aumentarsueldoporoficio;
+/
+--ejercicio28
+create or replace procedure subidadepartamento(
+departamento department.department_id%type,
+incremento employee.salary%type
+)
+is
+cursor c1 is select employee_id from employee where department_id=departamento;
+codigo number;
+contador number;
+begin
+contador:=0;
+fetch c1 into  codigo;
+while c1%found loop
+update employee set salary=salary+incremento where employee_id=codigo;
+contador:=contador+1;
+fetch c1 into codigo;
+end loop;
+DBMS_OUTPUT.PUT_LINE('se han modificado estos salarios'|| contador);
+end subidadepartamento;
+--ejercicio 29
+CREATE OR REPLACE PROCEDURE subidasueldo (
+    empleado    employee.employee_id%TYPE,
+    incremento  employee.salary%TYPE
+) IS
+BEGIN
+    UPDATE employee
+    SET
+        salary = salary + incremento
+    WHERE
+        employee_id = empleado;
+
+END subidasueldo;
 
 
 
