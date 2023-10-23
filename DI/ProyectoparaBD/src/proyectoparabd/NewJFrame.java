@@ -3,10 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package proyectoparabd;
-import com.mysql.cj.jdbc.ConnectionImpl;
+
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -40,7 +41,7 @@ public class NewJFrame extends javax.swing.JFrame {
         potencia = new javax.swing.JTextField();
         autonomia = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaCoches = new javax.swing.JTable();
         precio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,6 +49,11 @@ public class NewJFrame extends javax.swing.JFrame {
         createButton.setText("create");
 
         readButton.setText("read");
+        readButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                readButtonMouseClicked(evt);
+            }
+        });
 
         updateButton.setText("update");
 
@@ -55,13 +61,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         cleanButton.setText("clean");
 
-        identificador.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                identificadorActionPerformed(evt);
-            }
-        });
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCoches.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -72,7 +72,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 "ID", "MODELO", "POTENCIA", "AUTONOMIA", "PRECIO"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaCoches);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,7 +116,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(identificador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(readButton)
                             .addComponent(modelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -141,13 +141,47 @@ public class NewJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void identificadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificadorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_identificadorActionPerformed
+    private void readButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_readButtonMouseClicked
+        read();        // TODO add your handling code here:
+    }//GEN-LAST:event_readButtonMouseClicked
 
     /**
      * @param args the command line arguments
      */
+    private void read() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/tesla";
+            Connection con = (Connection) DriverManager.getConnection(url, "root", "");
+            PreparedStatement pst;
+            ResultSet rs;
+            pst = con.prepareStatement("select * from coches");
+            rs = pst.executeQuery("select * from coches");
+            int id;
+            String modelo;
+            int potencia;
+            int autonomia;
+            int precio;
+            DefaultTableModel modeloDatos = (DefaultTableModel) tablaCoches.getModel();
+            int rowCount = 0;
+            int tam = modeloDatos.getRowCount();
+            while (rowCount < tam) {
+                modeloDatos.removeRow(0);
+                rowCount++;
+            }
+            while (rs.next()) {
+                id = Integer.parseInt(rs.getString("id"));
+                modelo = rs.getString("modelo");
+                potencia = Integer.parseInt(rs.getString("potencia"));
+                autonomia = Integer.parseInt(rs.getString("autonomia"));
+                precio = Integer.parseInt(rs.getString("precio"));
+                modeloDatos.addRow(new Object[]{id, modelo, potencia, autonomia, precio});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -171,7 +205,7 @@ public class NewJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -188,11 +222,12 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField identificador;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField modelo;
     private javax.swing.JTextField potencia;
     private javax.swing.JTextField precio;
     private javax.swing.JButton readButton;
+    private javax.swing.JTable tablaCoches;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
+
