@@ -355,11 +355,10 @@ CREATE OR REPLACE PACKAGE actualiza AS
     
 END actualiza;
 
-
 CREATE OR REPLACE PACKAGE BODY actualiza AS
 
     PROCEDURE bajapedidos (
-        codcli sales_order.customer_id
+        codcli sales_order.customer_id%type
     ) IS
     BEGIN
         DELETE FROM sales_order
@@ -378,8 +377,8 @@ CREATE OR REPLACE PACKAGE BODY actualiza AS
     PROCEDURE altapedidos (
         cantidad sales_order.total%TYPE
     ) IS
-        cliente  sales_order.customer_id;
-        pedido   sales_order.order_id;
+        cliente  sales_order.customer_id%type;
+        pedido   sales_order.order_id%type;
     BEGIN
         SELECT
             MAX(sales_order.order_id) + 1,
@@ -401,6 +400,8 @@ CREATE OR REPLACE PACKAGE BODY actualiza AS
     END altapedidos;
 
 END actualiza;
+
+
 --ejercicio 13 no se adaptarlo a esta BD
 --ejercicio 14
 DROP TABLE temp;
