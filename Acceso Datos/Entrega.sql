@@ -593,6 +593,62 @@ for each row
 begin
 insert into temp values(:old.employee_id, :old.first_name);
 end del_emp;
+--ejercicio 22
+CREATE OR REPLACE PROCEDURE mod_salario (
+    codigo IN employee.employee_id%TYPE
+) IS
+    num_empleado NUMBER;
+    funcion varchar2(50);
+BEGIN
+    SELECT
+        COUNT(*),
+        job.function
+    INTO num_empleado, funcion
+    FROM
+        employee, job
+    WHERE
+        manager_id = codigo
+        and job.job_id=employee.job_id
+    GROUP BY
+        manager_id, job.function;
+        
+
+    IF ( funcion = 'PRESIDENT' ) THEN
+        UPDATE employee
+        SET
+            salary = salary + 30;
+
+    ELSE
+        IF ( num_empleado = 0 ) THEN
+            UPDATE employee
+            SET
+                salary = salary + 50;
+
+        ELSE
+            IF ( num_empleado = 1 ) THEN
+                UPDATE employee
+                SET
+                    salary = salary + 80;
+
+            ELSE
+                IF ( num_empleado = 2 ) THEN
+                    UPDATE employee
+                    SET
+                        salary = salary + 100;
+
+                ELSE
+                    UPDATE employee
+                    SET
+                        salary = salary + 110;
+
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+
+END mod_salario;
+--ejercicio 23
+
 
 
 
