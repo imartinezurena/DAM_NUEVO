@@ -4,9 +4,14 @@
  */
 package proyectoparabd;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -49,6 +54,10 @@ public class NewJFrame extends javax.swing.JFrame {
         labelPotencia = new javax.swing.JLabel();
         labelAutonomia = new javax.swing.JLabel();
         labelPrecio = new javax.swing.JLabel();
+        importCSVbutton = new javax.swing.JButton();
+        exportCsvButton = new javax.swing.JButton();
+        importJSON = new javax.swing.JButton();
+        exportJSON = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -78,8 +87,18 @@ public class NewJFrame extends javax.swing.JFrame {
         });
 
         deleteButton.setText("delete");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseClicked(evt);
+            }
+        });
 
         cleanButton.setText("clean");
+        cleanButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cleanButtonMouseClicked(evt);
+            }
+        });
 
         tablaCoches.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,6 +121,24 @@ public class NewJFrame extends javax.swing.JFrame {
 
         labelPrecio.setText("PRECIO");
 
+        importCSVbutton.setText("import CSV");
+        importCSVbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importCSVbuttonMouseClicked(evt);
+            }
+        });
+
+        exportCsvButton.setText("export CSV");
+        exportCsvButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exportCsvButtonMouseClicked(evt);
+            }
+        });
+
+        importJSON.setText("import JSON");
+
+        exportJSON.setText("export JSON");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,29 +149,34 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(labelModelo)
                     .addComponent(labelAutonomia)
                     .addComponent(labelPrecio)
-                    .addComponent(labelPotencia, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(modelo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(createButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(potencia, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21)
-                        .addComponent(readButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(autonomia)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(precio)
-                                .addGap(6, 6, 6)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(deleteButton)
-                            .addComponent(cleanButton)
-                            .addComponent(updateButton))))
+                    .addComponent(labelPotencia, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(importCSVbutton)
+                    .addComponent(importJSON))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(modelo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(createButton))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(potencia, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(21, 21, 21)
+                            .addComponent(readButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(autonomia)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(precio)
+                                    .addGap(6, 6, 6)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(deleteButton)
+                                .addComponent(cleanButton)
+                                .addComponent(updateButton))))
+                    .addComponent(exportCsvButton)
+                    .addComponent(exportJSON))
                 .addGap(44, 44, 44)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -173,6 +215,14 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(labelPrecio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cleanButton)
+                        .addGap(79, 79, 79)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(exportCsvButton)
+                            .addComponent(importCSVbutton))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(importJSON)
+                            .addComponent(exportJSON))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -188,23 +238,26 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_readButtonMouseClicked
 
     private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
-      
+
         try {
-              String url = "jdbc:mysql://localhost:3306/tesla";
+            String url = "jdbc:mysql://localhost:3306/tesla";
             Connection con = (Connection) DriverManager.getConnection(url, "root", "");
             PreparedStatement pst;
             pst = con.prepareStatement("insert into coches (modelo,potencia,autonomia,precio) values(?,?,?,?)");
-             pst.setString(1, modelo.getText() );
-             pst.setInt(2,Integer.parseInt(potencia.getText()));
-             pst.setInt(3, Integer.parseInt(autonomia.getText()));
-             pst.setInt(4, Integer.parseInt(precio.getText()));
-             int filas= pst.executeUpdate();
-             if (filas>0){read();}
-             con.close();
+            pst.setString(1, modelo.getText());
+            pst.setInt(2, Integer.parseInt(potencia.getText()));
+            pst.setInt(3, Integer.parseInt(autonomia.getText()));
+            pst.setInt(4, Integer.parseInt(precio.getText()));
+            int filas = pst.executeUpdate();
+            if (filas > 0) {
+                read();
+            }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }catch(NumberFormatException e){}
-           
+        } catch (NumberFormatException e) {
+        }
+
     }//GEN-LAST:event_createButtonMouseClicked
 
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
@@ -214,23 +267,96 @@ public class NewJFrame extends javax.swing.JFrame {
             String url = "jdbc:mysql://localhost:3306/tesla";
             Connection con;
             con = (Connection) DriverManager.getConnection(url, "root", "");
-             PreparedStatement pst;
-            pst=con.prepareCall("update coches set modelo=?, potencia=?, autonomia=?, precio=? where id=?");
-            
-             pst.setString(1, modelo.getText() );
-             pst.setInt(2,Integer.parseInt(potencia.getText()));
-             pst.setInt(3, Integer.parseInt(autonomia.getText()));
-             pst.setInt(4, Integer.parseInt(precio.getText()));
-             pst.setInt(5, Integer.parseInt(seleccion));
-             int filas= pst.executeUpdate();
-             if (filas>0){read();}
-             con.close();
+            PreparedStatement pst;
+            pst = con.prepareCall("update coches set modelo=?, potencia=?, autonomia=?, precio=? where id=?");
+
+            pst.setString(1, modelo.getText());
+            pst.setInt(2, Integer.parseInt(potencia.getText()));
+            pst.setInt(3, Integer.parseInt(autonomia.getText()));
+            pst.setInt(4, Integer.parseInt(precio.getText()));
+            pst.setInt(5, Integer.parseInt(seleccion));
+            int filas = pst.executeUpdate();
+            if (filas > 0) {
+                read();
+            }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-           
+
     }//GEN-LAST:event_updateButtonMouseClicked
 
+    private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+        // TODO add your handling code here:
+        String seleccion = JOptionPane.showInputDialog(this, "introduce el id a borrar");
+        try {
+            String url = "jdbc:mysql://localhost:3306/tesla";
+            Connection con;
+            con = (Connection) DriverManager.getConnection(url, "root", "");
+            PreparedStatement pst;
+            pst = con.prepareCall("delete from coches where id=?");
+            pst.setInt(1, Integer.parseInt(seleccion));
+            int filas = pst.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_deleteButtonMouseClicked
+
+    private void cleanButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cleanButtonMouseClicked
+        // TODO add your handling code here:
+        modelo.setText(" ");
+        potencia.setText(" ");
+        autonomia.setText(" ");
+        precio.setText(" ");
+    }//GEN-LAST:event_cleanButtonMouseClicked
+
+    private void importCSVbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importCSVbuttonMouseClicked
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int seleccion = fileChooser.showOpenDialog(this);
+
+        if (JFileChooser.APPROVE_OPTION == seleccion) {
+             String linea;
+            File fichero = fileChooser.getSelectedFile();
+            try (BufferedReader lectorConBuffer = new BufferedReader(new FileReader(fichero))) {
+                lectorConBuffer.readLine();
+            while ((linea = lectorConBuffer.readLine()) != null) {
+                cargarBase(linea);
+                
+            }
+        } catch (IOException e) {
+            System.out.println("Excepción IOException capturada: " + e.getMessage());
+        }
+        }
+    }//GEN-LAST:event_importCSVbuttonMouseClicked
+
+    private void exportCsvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportCsvButtonMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_exportCsvButtonMouseClicked
+private void cargarBase(String linea){
+        try {
+            int num =4;
+            String[] campos=linea.split(",");
+            String url = "jdbc:mysql://localhost:3306/tesla";
+            Connection con;
+            con = (Connection) DriverManager.getConnection(url, "root", "");
+            PreparedStatement pst;
+            pst = con.prepareCall("insert into coches (modelo,potencia,autonomia,precio) values(?,?,?,?)");
+            pst.setString(1, campos[0]);
+            pst.setInt(2, Integer.parseInt(campos[1]));
+            pst.setInt(3, Integer.parseInt(campos[2]));
+            pst.setInt(4, Integer.parseInt(campos[3]));
+            int filas= pst.executeUpdate();
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    
+
+}
     /**
      * @param args the command line arguments
      */
@@ -265,8 +391,7 @@ public class NewJFrame extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }
-        
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -306,6 +431,10 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton cleanButton;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton exportCsvButton;
+    private javax.swing.JButton exportJSON;
+    private javax.swing.JButton importCSVbutton;
+    private javax.swing.JButton importJSON;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
@@ -321,4 +450,3 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
-
