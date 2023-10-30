@@ -593,6 +593,196 @@ for each row
 begin
 insert into temp values(:old.employee_id, :old.first_name);
 end del_emp;
+--ejercicio 22
+CREATE OR REPLACE PROCEDURE mod_salario (
+    codigo IN employee.employee_id%TYPE
+) IS
+    num_empleado NUMBER;
+    funcion varchar2(50);
+BEGIN
+    SELECT
+        COUNT(*),
+        job.function
+    INTO num_empleado, funcion
+    FROM
+        employee, job
+    WHERE
+        manager_id = codigo
+        and job.job_id=employee.job_id
+    GROUP BY
+        manager_id, job.function;
+        
+
+    IF ( funcion = 'PRESIDENT' ) THEN
+        UPDATE employee
+        SET
+            salary = salary + 30;
+
+    ELSE
+        IF ( num_empleado = 0 ) THEN
+            UPDATE employee
+            SET
+                salary = salary + 50;
+
+        ELSE
+            IF ( num_empleado = 1 ) THEN
+                UPDATE employee
+                SET
+                    salary = salary + 80;
+
+            ELSE
+                IF ( num_empleado = 2 ) THEN
+                    UPDATE employee
+                    SET
+                        salary = salary + 100;
+
+                ELSE
+                    UPDATE employee
+                    SET
+                        salary = salary + 110;
+
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+
+END mod_salario;
+--ejercicio 23
+DECLARE
+    cadena  VARCHAR2(50);
+    anedac  VARCHAR2(50);
+BEGIN
+    cadena := 'hola mundo';
+    anedac := 'Odnum aloh';
+    dbms_output.put_line(cadena);
+    dbms_output.put_line(anedac);
+END;
+--ejercicio 24
+create or replace procedure jefe
+is
+cursor c1 is select employee.first_name, employee.manager_id from employee;
+nombre varchar2(50);
+jefe number;
+nombrejefe varchar2(50);
+cursor c2 is select employee.first_name from employee where employee_id=jefe;
+begin
+fetch c1 into nombre, jefe;
+fetch c2 into nombrejefe;
+while c1%found loop
+DBMS_OUTPUT.PUT_Line(nombre||' '|| nombrejefe);
+fetch c1 into nombre, jefe;
+fetch c2 into nombrejefe;
+end loop;
+end jefe;
+--ejercicio 25
+CREATE OR REPLACE PROCEDURE apellidos (
+    departamento department.name%TYPE
+) IS
+
+    contador  NUMBER;
+    apellidos  VARCHAR2(50);
+    CURSOR c1 IS
+    SELECT
+        employee.last_name
+    FROM
+        employee
+    WHERE
+        department_id = (
+            SELECT
+                department_id
+            FROM
+                department
+            WHERE
+                department.name= departamento
+        );
+
+BEGIN
+    contador := 1;
+    FETCH c1 INTO apellidos;
+    WHILE c1%found LOOP
+        dbms_output.put_line(contador || apellidos);
+        contador := contador + 1;
+        FETCH c1 INTO apellidos;
+    END LOOP;
+
+END apellidos;
+--ejercicio 26
+create or replace procedure subidasalario(
+subida number,
+empleado employee.employee_id%type
+)
+is
+salario_nulo EXCEPTION;
+begin
+update employee set salary= salary+subida where employee_id =empleado;
+exception
+when no_data_found then DBMS_OUTPUT.PUT_LINE('no existe el departamento');
+WHEN salario_nulo THEN
+        raise_application_error(-20001, 'no tiene salario');
+end subidasalario;
+--ejercicio 27
+CREATE OR REPLACE PROCEDURE aumentarsueldoporoficio (
+    oficio employee.job_id%TYPE
+) IS
+    salariopromediooficio  NUMBER;
+    diferencia             NUMBER;
+    aumento                NUMBER;
+    salariomedionulo EXCEPTION;
+BEGIN
+    SELECT
+        AVG(salary)
+    INTO salariopromediooficio
+    FROM
+        employee
+    WHERE
+        job_id = oficio;
+
+    UPDATE employee
+    SET
+        salary = salary + ( 0.5 * ( salary - salariopromediooficio ) )
+    WHERE
+            job_id = oficio
+        AND salary < salariopromediooficio;
+
+EXCEPTION
+    WHEN salariomedionulo THEN
+        raise_application_error(-20002, 'no tiene salario');
+END aumentarsueldoporoficio;
+/
+--ejercicio28
+create or replace procedure subidadepartamento(
+departamento department.department_id%type,
+incremento employee.salary%type
+)
+is
+cursor c1 is select employee_id from employee where department_id=departamento;
+codigo number;
+contador number;
+begin
+contador:=0;
+fetch c1 into  codigo;
+while c1%found loop
+update employee set salary=salary+incremento where employee_id=codigo;
+contador:=contador+1;
+fetch c1 into codigo;
+end loop;
+DBMS_OUTPUT.PUT_LINE('se han modificado estos salarios'|| contador);
+end subidadepartamento;
+--ejercicio 29
+CREATE OR REPLACE PROCEDURE subidasueldo (
+    empleado    employee.employee_id%TYPE,
+    incremento  employee.salary%TYPE
+) IS
+BEGIN
+    UPDATE employee
+    SET
+        salary = salary + incremento
+    WHERE
+        employee_id = empleado;
+
+END subidasueldo;
+
+
 
 
 
