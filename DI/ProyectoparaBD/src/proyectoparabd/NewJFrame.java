@@ -7,6 +7,7 @@ package proyectoparabd;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
@@ -333,6 +334,35 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void exportCsvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportCsvButtonMouseClicked
         // TODO add your handling code here:
+          static final String CSV_CABECERA = "ID,MODELO,POTENCIA,AUTONOMIA,PRECIO";
+           static final String CSV_SEPARADOR = ",";
+        try {
+            
+    
+            String url = "jdbc:mysql://localhost:3306/tesla";
+            Connection con = (Connection) DriverManager.getConnection(url, "root", "");
+            PreparedStatement pst;
+            ResultSet rs;
+            pst = con.prepareStatement("select * from Coches");
+            rs = pst.executeQuery("select * from Coches");
+             FileWriter escritor;
+            escritor = new FileWriter(fichero);
+            escritor.write(CSV_CABECERA + "\n");
+            escritor.flush();
+             while (rs.next()) {
+                escritor.write(rs.getString("modelo") + "," + rs.getString("potencia") + "," + rs.getString("autonomia") + "," + rs.getString("precio")+"\n");
+                escritor.flush();
+            }
+             
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Exportacion no completada correctamente");
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Exportacion no completada correctamente");
+        }
+        
         
     }//GEN-LAST:event_exportCsvButtonMouseClicked
 private void cargarBase(String linea){
