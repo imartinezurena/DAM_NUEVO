@@ -1,33 +1,78 @@
-create or replace type cubo as object(
-largo INTEGER,
-ancho INTEGER,
-alto INTEGER,
-member function superficie  (largo number, ancho number, alto number)return number,
-member function volumen(largo number,ancho number,alto number)return number,
-member procedure mostrar
+--ejercicio 1 a
+CREATE OR REPLACE TYPE cubo AS OBJECT (
+    largo   INTEGER,
+    ancho   INTEGER,
+    alto    INTEGER,
+    MEMBER FUNCTION superficie RETURN NUMBER,
+    MEMBER FUNCTION volumen RETURN NUMBER,
+    member  procedure mostrar
 );
-create or replace type body cubo as
-member function superficie (largo in number, ancho in number, alto in number) is
-resultadoSuper number;
-begin
-self.largo:=largo;
-self.ancho:=ancho;
-self.alto:=alto;
-resultado:=(largo*ancho+largo*alto+ancho*alto)*2;
-return resultadoSuper;
-end;
-member function volumen (largo in number, ancho in number, alto in number) is
-resultadoV number;
-begin
-self.largo:=largo;
-self.ancho:=ancho;
-self.alto:=alto;
-resultadoVol:=largo*ancho*alto;
-return resultadoVol;
-end;
-member procedure mostrar () is
-begin
-DBMS_OUTPUT.PUT_LINE('largo:'||largo||' ancho:'||ancho||' alto:'||alto);
-DBMS_OUTPUT.PUT_LINE('volumen'||resultadoVol||' Superficie:'||resultadoSuper);
-end;
-end;
+
+CREATE OR REPLACE TYPE BODY cubo AS
+    MEMBER FUNCTION superficie RETURN NUMBER IS
+    BEGIN
+        RETURN ( largo * ancho + largo * alto + ancho * alto ) * 2;
+    END;
+
+    MEMBER FUNCTION volumen RETURN NUMBER IS
+    BEGIN
+        RETURN largo * ancho * alto;
+    END;
+
+    MEMBER PROCEDURE mostrar IS
+    BEGIN
+        dbms_output.put_line('largo:'
+                             || largo
+                             || ' ancho:'
+                             || ancho
+                             || ' alto:'
+                             || alto);
+
+        dbms_output.put_line('volumen'
+                             || self.volumen
+                             || ' Superficie:'
+                             || self.superficie);
+
+    END;
+
+END;
+--ejercicio b
+create table cubos of cubo;
+--ejercicio c
+insert into cubos values(10,10,10);
+insert into cubos values(3,4,5);
+--ejercicio d
+select * from cubos;
+--ejercicio e
+DECLARE
+    kubo cubo := cubo(NULL, NULL, NULL);
+BEGIN SELECT
+    *
+INTO
+    kubo.largo,
+    kubo.ancho,
+    kubo.alto
+FROM
+    cubos
+WHERE
+    largo = 10;
+    dbms_output.put_line('superficie: ' || kubo.superficie());
+    dbms_output.put_line('volumen: ' || kubo.volumen());
+END;
+--ejercicio f
+DECLARE
+    kubo cubo := cubo(NULL, NULL, NULL);
+BEGIN
+    SELECT
+        *
+    INTO
+        kubo.largo,
+        kubo.ancho,
+        kubo.alto
+    FROM
+        cubos
+    WHERE
+        largo = 10;
+
+    kubo.mostrar;
+END;
