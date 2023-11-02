@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 // Función de controlador de señal para SIGINT
-void sigint_handler(int signo) {
+void sigint_handler() {
     printf("Se recibió la señal SIGINT (Ctrl + C)\n");
     // Aquí puedes realizar acciones adicionales antes de salir si lo deseas
     exit(0);
