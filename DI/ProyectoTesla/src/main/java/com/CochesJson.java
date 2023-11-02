@@ -19,5 +19,7 @@ public class CochesJson {
         this.precio = precio;
         this.potencia = potencia;
     }
-    
+    public String toCSV(){
+    return modelo+","+potencia+","+autonomia+","+precio;
+    }
 }

@@ -16,16 +16,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author at5DAM2
  */
 public class CochesTesla extends javax.swing.JFrame {
-          static final String CSV_CABECERA = "ID,MODELO,POTENCIA,AUTONOMIA,PRECIO";
-           static final String CSV_SEPARADOR = ",";
-           public static final String FICHERO_CSV="goku.csv";
-           public static final String FICHERO_JSON="vegeta.json";
+
+    static final String CSV_CABECERA = "ID,MODELO,POTENCIA,AUTONOMIA,PRECIO";
+    static final String CSV_SEPARADOR = ",";
+    public static final String FICHERO_CSV = "goku.csv";
+    public static final String FICHERO_JSON = "vegeta.json";
+
     /**
      * Creates new form CochesTesla
      */
@@ -92,11 +96,6 @@ public class CochesTesla extends javax.swing.JFrame {
                 importJSONMouseClicked(evt);
             }
         });
-        importJSON.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importJSONActionPerformed(evt);
-            }
-        });
 
         createButton.setText("create");
         createButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -137,11 +136,6 @@ public class CochesTesla extends javax.swing.JFrame {
         exportJSON.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 exportJSONMouseClicked(evt);
-            }
-        });
-        exportJSON.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportJSONActionPerformed(evt);
             }
         });
 
@@ -255,23 +249,28 @@ public class CochesTesla extends javax.swing.JFrame {
     private void importCSVbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importCSVbuttonMouseClicked
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("csv", "csv"));
         int seleccion = fileChooser.showOpenDialog(this);
 
         if (JFileChooser.APPROVE_OPTION == seleccion) {
-            String linea;
-            File fichero = fileChooser.getSelectedFile();
-            try (BufferedReader lectorConBuffer = new BufferedReader(new FileReader(fichero))) {
-                lectorConBuffer.readLine();
-                while ((linea = lectorConBuffer.readLine()) != null) {
-                    cargarBase(linea);
 
-                }
-            } catch (IOException e) {
-                System.out.println("Excepción IOException capturada: " + e.getMessage());
-            }
+            File fichero = fileChooser.getSelectedFile();
+            leerCSV(fichero);
         }
     }//GEN-LAST:event_importCSVbuttonMouseClicked
+    private void leerCSV(File fichero) {
+        String linea;
+        try (BufferedReader lectorConBuffer = new BufferedReader(new FileReader(fichero))) {
+            lectorConBuffer.readLine();
+            while ((linea = lectorConBuffer.readLine()) != null) {
+                cargarBase(linea);
 
+            }
+        } catch (IOException e) {
+            System.out.println("Excepción IOException capturada: " + e.getMessage());
+        }
+
+    }
     private void exportCsvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportCsvButtonMouseClicked
         // TODO add your handling code here:
 
@@ -288,7 +287,7 @@ public class CochesTesla extends javax.swing.JFrame {
             escritor.write(CSV_CABECERA + "\n");
             escritor.flush();
             while (rs.next()) {
-                escritor.write(rs.getString("modelo") + "," + rs.getString("potencia") + "," + rs.getString("autonomia") + "," + rs.getString("precio")+"\n");
+                escritor.write(rs.getString("modelo") + "," + rs.getString("potencia") + "," + rs.getString("autonomia") + "," + rs.getString("precio") + "\n");
                 escritor.flush();
             }
             escritor.close();
@@ -305,8 +304,39 @@ public class CochesTesla extends javax.swing.JFrame {
 
     private void importJSONMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importJSONMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_importJSONMouseClicked
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("json", "json"));
+        int seleccion = fileChooser.showOpenDialog(this);
 
+        if (JFileChooser.APPROVE_OPTION == seleccion) {
+            File fichero = fileChooser.getSelectedFile();
+            leerJson(fichero);
+        }
+    }//GEN-LAST:event_importJSONMouseClicked
+    private void leerJson(File fichero) {
+        String[] arrayJson;
+        String linea = "";
+        String cadenajson=""; 
+        int contador=0;
+        try (BufferedReader lectorConBuffer = new BufferedReader(new FileReader(fichero))) {
+            while ((linea = lectorConBuffer.readLine()) != null) {
+                cadenajson+=linea;
+            }
+            cadenajson = cadenajson.substring(1, (cadenajson.length()- 1));
+            arrayJson = cadenajson.split("},");
+            for (String cadena : arrayJson) {
+                if (contador<arrayJson.length-1){
+                cadena+="}";
+                }
+                CochesJson guagua= new Gson().fromJson(cadena, CochesJson.class);
+                cargarBase(guagua.toCSV());
+                contador++;
+            }
+
+        } catch (IOException e) {
+            System.out.println("Excepción IOException capturada: " + e.getMessage());
+        }
+    }
     private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
 
         try {
@@ -383,15 +413,11 @@ public class CochesTesla extends javax.swing.JFrame {
         precio.setText(" ");
     }//GEN-LAST:event_cleanButtonMouseClicked
 
-    private void importJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importJSONActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_importJSONActionPerformed
-
     private void exportJSONMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exportJSONMouseClicked
         // TODO add your handling code here:
-         
-        try
-        {String url = "jdbc:mysql://localhost:3306/tesla";
+
+        try {
+            String url = "jdbc:mysql://localhost:3306/tesla";
             Connection con = (Connection) DriverManager.getConnection(url, "root", "");
             PreparedStatement pst;
             ResultSet rs;
@@ -402,40 +428,33 @@ public class CochesTesla extends javax.swing.JFrame {
             int potencia;
             int autonomia;
             int precio;
-            List<CochesJson> lista=new ArrayList();
+            List<CochesJson> lista = new ArrayList();
             while (rs.next()) {
                 id = Integer.parseInt(rs.getString("id"));
                 modelo = rs.getString("modelo");
                 potencia = Integer.parseInt(rs.getString("potencia"));
                 autonomia = Integer.parseInt(rs.getString("autonomia"));
                 precio = Integer.parseInt(rs.getString("precio"));
-                   lista.add(new CochesJson(modelo, autonomia, precio, potencia));
+                lista.add(new CochesJson(modelo, autonomia, precio, potencia));
             }
-            String json=new Gson().toJson(lista);
+            String json = new Gson().toJson(lista);
             FileWriter escritor;
             escritor = new FileWriter(FICHERO_JSON);
             escritor.write(json);
             escritor.close();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CochesTesla.class.getName()).log(Level.SEVERE, null, ex);
-        }     catch (IOException ex) {
-                  Logger.getLogger(CochesTesla.class.getName()).log(Level.SEVERE, null, ex);
-              }
-    
+        } catch (IOException ex) {
+            Logger.getLogger(CochesTesla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_exportJSONMouseClicked
 
-    private void exportJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportJSONActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_exportJSONActionPerformed
-
-    
-    
-    private void cargarBase(String linea){
+    private void cargarBase(String linea) {
         try {
-            int num =4;
-            String[] campos=linea.split(",");
+            int num = 4;
+            String[] campos = linea.split(",");
             String url = "jdbc:mysql://localhost:3306/tesla";
             Connection con;
             con = (Connection) DriverManager.getConnection(url, "root", "");
@@ -445,15 +464,14 @@ public class CochesTesla extends javax.swing.JFrame {
             pst.setInt(2, Integer.parseInt(campos[1]));
             pst.setInt(3, Integer.parseInt(campos[2]));
             pst.setInt(4, Integer.parseInt(campos[3]));
-            int filas= pst.executeUpdate();
+            int filas = pst.executeUpdate();
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(CochesTesla.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-    
 
-}
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -489,6 +507,7 @@ public class CochesTesla extends javax.swing.JFrame {
             Logger.getLogger(CochesTesla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -545,4 +564,5 @@ public class CochesTesla extends javax.swing.JFrame {
     private javax.swing.JTable tablaCoches;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
 }
