@@ -46,6 +46,7 @@ public class PruebasSwing {
         JRadioButton rdHombre = new JRadioButton("hombre");
         JRadioButton rdmujer = new JRadioButton("mujer");
         JComboBox comboColores=new JComboBox();
+        comboColores.addItem(" ");
         comboColores.addItem("green");
         comboColores.addItem("red");
         comboColores.addItem("blue");
@@ -78,7 +79,7 @@ public class PruebasSwing {
 
         areaTexto.setSize(0, 0);
         
-        btnSaludar.addActionListener((l)-> {
+        comboColores.addActionListener((l)-> {
         String elegido= comboColores.getSelectedItem().toString();
         Color c=null;
             switch (elegido) {
@@ -100,7 +101,8 @@ public class PruebasSwing {
         mipanel.setBackground(c);
         });
         btnSaludar2.addActionListener((f)->{
-        miventana.setTitle(JOptionPane.showInputDialog(miventana, "mi mensaje"));
+            //if (areaTexto.getText().isEmpty()){JOptionPane.showMessageDialog(miventana,"kkculopedopis");}
+        JOptionPane.showConfirmDialog(miventana, "facu la mama", "sdgswr", 1);
     });
         
     }
