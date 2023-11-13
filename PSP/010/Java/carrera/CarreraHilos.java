@@ -16,7 +16,8 @@ public class CarreraHilos {
         fausto.start();
         facu.start();
          facu.join();
-            fausto.join();*/
+            fausto.join();
+            */
     for(int i =0;i<CANTIDAD_CORREDORES;i++){
             threadArray[i].start();
         }
