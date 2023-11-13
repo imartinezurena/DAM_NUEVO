@@ -65,6 +65,8 @@ public class PruebasSwing {
         mipanel.add(vainilla);
         mipanel.add(x);
         mipanel.add(comboColores);
+        mipanel.add(rdHombre);
+        mipanel.add(rdmujer);
         
         
         miventana.setVisible(true);
