@@ -101,17 +101,16 @@ member function sueldo_liquido return number is
 begin
 return(sueldo+comision)-anticipo;
 end;
-member procedure aumento_sueldo(aumento number, nombre varchar2) is
+member procedure aumento_sueldo(aumento number) is
 sueldoFinal number;
 begin
 sueldoFinal:=sueldo+aumento;
-update empleado set sueldo=sueldofinal where nombre=nombre;
+update empleados set sueldo=sueldofinal where nombre=self.nombre;
 end;
 member procedure setAnticipo(anticipado number) is begin
 anticipo:=anticipado;
 end;
 end;
-
 --ejercicio 9
 DECLARE
     salario         NUMBER;
