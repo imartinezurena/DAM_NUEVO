@@ -155,7 +155,7 @@ BEGIN
         iden = 1;
 
     cont := hijo.first;
-    WHILE cont < hijo.last LOOP
+    WHILE cont <= hijo.last LOOP
         dbms_output.put_line('el hijo'
                              || cont
                              || ' se llama '
@@ -165,8 +165,13 @@ BEGIN
     END LOOP;
 
     dbms_output.put_line('el hijos despues de añadir');
+    cont := hijo.last+1;
     hijo.extend(3);
-    hijo(hijo.last) := 'Luis';
+    WHILE cont <= hijo.last LOOP
+        hijo(cont) := 'Luis';
+        cont := cont + 1;
+    END LOOP;
+
     cont := hijo.first;
     WHILE cont <= hijo.last LOOP
         dbms_output.put_line('el hijo'
@@ -184,9 +189,6 @@ BEGIN
         iden = 1;
 
 END;
-
-select * from hijos_empleados;
-
 --ejercicio 12
 select * from user_varrays;
 --ejercicio 13

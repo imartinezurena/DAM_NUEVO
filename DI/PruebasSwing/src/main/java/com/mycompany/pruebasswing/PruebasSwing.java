@@ -103,6 +103,7 @@ public class PruebasSwing {
         btnSaludar2.addActionListener((f)->{
             //if (areaTexto.getText().isEmpty()){JOptionPane.showMessageDialog(miventana,"kkculopedopis");}
         JOptionPane.showConfirmDialog(miventana, "facu la mama", "sdgswr", 1);
+        JOptionPane.showInputDialog(miventana, "mipanel", "titlee", JOptionPane.WARNING_MESSAGE);
     });
         
     }
