@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="contar"/>
+    <button mostrarJSON>mostrarJSON</button>
+    <br>
+    <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci magnam optio natus, rem ratione placeat autem quis cupiditate veniam pariatur, nihil officiis esse, ad nisi! Pariatur recusandae assumenda veritatis quaerat.
+        <a href="https://www.google.com/search?client=firefox-b-d&q=sdfghjk">
+            link
+        </a>
+    </p>    
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet dolorem minima quas doloremque enim qui minus, deserunt quam aliquid iste voluptatibus molestiae, deleniti ut dicta labore laborum ducimus maiores aspernatur.
+        <a href="https://www.google.com/search?client=firefox-b-d&q=sdfghjk">
+            link
+        </a>
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem voluptatibus architecto beatae illo enim aspernatur impedit, aperiam porro officia veritatis quidem incidunt vel numquam! Eveniet dolore debitis minima cum quasi.
+        <a href="https://www.google.com/search?client=firefox-b-d&q=sdfghjk">
+            link
+        </a>
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae aut eius cumque quos fuga ipsa numquam iste velit voluptate, illum quas minima totam odit nisi asperiores eaque blanditiis architecto dolores.
+        <a href="https://www.google.com/">
+            link
+        </a>
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, totam quas cumque numquam dolorem nam corrupti. Maxime odit recusandae illo alias, aut dicta vitae, modi pariatur suscipit, sequi atque fugit!
+        <a href="https://www.google.com/search?client=firefox-b-d&q=sdfghjk">
+            link
+        </a>
+    </p>
+</body>
+<script>
+/*
+ejercicio 1:
+crea una funcion en javascript que cuando pulse el boton contar:
+- me cuente el numero de parrafos que tengo y los muestre por consola
+- me cuente el numero de enlaces que tengo y los muestre por una ventana emergente
+- me muestre el cuarto enlace. Escribir directamente en el html "El cuarto enlace es: "+ enlace
+*/
+
+/*
+ejercicio2:
+al pulsar el boton "mostrarJson" debe sacar la siguiente informacion:
+El cliente Pedro Ramires que vive en Calle de la piruleta14 ha comprado
+
+3 impresoras laser Canon
+2 Raton Gamer Logitech
+
+por un importe total de 350€
+*/
+venta={ "Cliente":1233, "Nombre":"Pedro Ramirez", "Dirección":"Calle de la piruleta 14", "ultimo_pedido": { "id_pedido": 2, "Productos": [ { "id_producto":77, "Nombre":"Impresora Láser", "Fabricante":"Canon", "Cantidad":3, "precio_uni":80 }, { "id_producto":22, "Nombre":"Ratón Gamer", "Fabricante":"Logitech", "Cantidad":2, "precio_uni":55 } ] } }
+document.getElementsByTagName("input")[0].addEventListener("click",contar)
+document.getElementsByTagName("button")[0].addEventListener("click",mostar)
+function contar(){
+    parrafos=document.getElementsByTagName("p");
+    console.log(parrafos.length);
+    parrafos=document.getElementsByTagName("a");
+    alert(parrafos.length);
+    divi = document.createElement("div");
+    document.getElementsByTagName("body")[0].appendChild(divi);
+    parr=document.createElement("p");
+    parr.innerHTML="El cuarto elemento es: "+document.getElementsByTagName("a")[3].getAttribute("href");
+    divi.appendChild(parr);
+}
+function mostar(){
+    divi = document.createElement("div");
+    document.getElementsByTagName("body")[0].appendChild(divi);
+    parr=document.createElement("p");
+    parr.innerHTML="El cliente "+venta.Nombre +"que vive en "+venta.Dirección+" ha comprado:<br><br>";
+    cont=0;
+    total=0;
+    while(cont<venta.ultimo_pedido.Productos.length){
+        producto=venta.ultimo_pedido.Productos[cont];
+        parr.innerHTML+=""+producto.Cantidad+" "+ producto.Nombre+" "+producto.Fabricante+"<br>";
+        total+=producto.Cantidad*producto.precio_uni;
+        cont++;
+    }
+    parr.innerHTML+="<br>Por un importe total de "+total+"€";
+    divi.appendChild(parr);
+}
+/*
+Un instituto está compuesto de varios profesores.
+Cada profesor tiene un nombre, dni, teléfono,un departamento y una o varias asignaturas que imparte.
+Tambien pueden o no estar involucrados en uno o varios en proyectos del centro, como por ejemplo, convivencia, deportivo etc
+Crea un json que contenga 3 profesores 
+profesor 1 que imparta 2 asignaturas 
+profesor 2 que imparta 1 asignatura y participe en 2 proyectos 
+profesor 3 que imparta 4 asignaturas y participe en 1 proyecto
+*/
+instituto={
+    "profesores":[{
+        "Nombre":"Pedro",
+        "dni":"123456789ñ",
+        "telefono":"123456789",
+        "deparmento":"hola",
+        "asignaturas":[
+            {
+                "nombre":"di"
+            },
+            {
+                "nombre":"sge"
+            }
+        ],
+        "proyectos":[]
+    },
+    {
+        
+        "Nombre":"Padro",
+        "dni":"123476789ñ",
+        "telefono":"723456789",
+        "deparmento":"hola",
+        "asignaturas":[
+            {
+                "nombre":"di"
+            }
+        ],
+        "proyectos":[
+            {
+                "nombre":"proyecto no secreto"
+            },
+            {
+                "nombre":"proyecto secreto"
+            }
+        ]
+    },
+    {
+        "Nombre":"Pidro",
+        "dni":"193476789ñ",
+        "telefono":"723056789",
+        "deparmento":"hola",
+        "asignaturas":[
+            {
+                "nombre":"di"
+            },
+            {
+                "nombre":"sge"
+            },
+            {
+                "nombre":"ad"
+            },
+            {
+                "nombre":"psp"
+            }
+        ],
+        "proyectos":[
+            {
+                "nombre":"proyecto secreto"
+            }
+        ]
+    }]
+}
+</script>
+</html>
