@@ -74,8 +74,7 @@ function contar(){
     divi.appendChild(parr);
 }
 function mostar(){
-    divi = document.createElement("div");
-    document.getElementsByTagName("body")[0].appendChild(divi);
+    
     parr=document.createElement("p");
     parr.innerHTML="El cliente "+venta.Nombre +"que vive en "+venta.Dirección+" ha comprado:<br><br>";
     cont=0;
@@ -87,7 +86,7 @@ function mostar(){
         cont++;
     }
     parr.innerHTML+="<br>Por un importe total de "+total+"€";
-    divi.appendChild(parr);
+    document.getElementsByTagName("body")[0].appendChild(parr);
 }
 /*
 Un instituto está compuesto de varios profesores.
