@@ -1,4 +1,4 @@
-package hilosEjer2;
+package unidad2Hilos.hilosEjer2;
 
 public class Tablas {
     
