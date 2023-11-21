@@ -23,7 +23,7 @@ public class CarreraHilos {
             threadArray[i].start();
         }
         Thread.sleep(1000);
-        synchronized(Corredor.salida){
+        synchronized (Corredor.salida) {
             Corredor.salida.notifyAll();
         }
         try {
