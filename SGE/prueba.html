@@ -74,7 +74,7 @@ modelo<input type="text" id="modelo">
             lista=document.createElement("li")
             lista.innerHTML=document.getElementsByTagName("li")[i].innerHTML
             //lista.setAttribute("value","https://www.google.com/search?q=primero")
-            padre.appendChild(lista)
+            padre.insertBefore(lista,padre.first)
         }
         
         lista=document.getElementById("1")

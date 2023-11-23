@@ -13,7 +13,7 @@
     edad<input type="text" id="edad">
     <br>
     estado civil
-    <input type="radio" id="soltero"name="estadoCivil">
+    <input type="radio" id="soltero"name="estadoCivil" value="soltero">
     <label for="soltero">soltero</label>
     <input type="radio" id="casado" name="estadoCivil">
     <label for="casado">casado</label>
@@ -21,6 +21,7 @@
 
 </body>
 <script>
+    document.getElementsByName("estadoCivil")
     let arrayPersonas=[];
 document.getElementById("boton").addEventListener("click",añadir)
     function añadir(){

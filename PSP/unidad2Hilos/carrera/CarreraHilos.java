@@ -7,7 +7,7 @@ public class CarreraHilos {
 
     public static void main(String[] args) throws InterruptedException {
         Thread threadArray[] = new Thread[CANTIDAD_CORREDORES];
-        Object salida = new Object();
+        //Object salida = new Object();
         for (int i = 0; i < CANTIDAD_CORREDORES; i++) {
             threadArray[i] = new Thread(new Corredor(KILOMETROS, i));
         }
