@@ -26,7 +26,36 @@ select * from empleado30;
 select hijo.column_value from empleado30 e, table(e.hijos) hijo
 where idemp=1;
 --ejercicio 7
-
+declare
+ hijosNuevos empleado30.hijos%type :=t_anidada('Carmen','Candela','Cayetana');
+ begin
+ update empleado30
+ set hijos=hijosNuevos
+ where idemp=1;
+ end;
 
 --ejercicio 8
+ declare 
+hijosEmpleado empleado30.hijos%type;
+iden empleado30.idemp%type;
+nombre empleado30.nombre%type;
+surname empleado30.apellidos%type;
+cont number;
+cursor c1 is select * from empleado30;
+begin
+open c1;
+fetch c1 into iden, nombre, surname,hijosEmpleado;
+while c1%found loop
+dbms_output.put_line('el empleado'
+||' '||iden
+||' '||nombre||' '||surname||' tiene por hijos: ' );
+cont:=hijosEmpleado.first;
+while cont<= hijosEmpleado.last loop
+dbms_output.put_line('  ·'||hijosEmpleado(cont));
+cont:=cont+1;
+end loop;
+fetch c1 into iden, nombre, surname,hijosEmpleado;
+end loop;
+close c1;
+end;
 
