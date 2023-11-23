@@ -21,7 +21,7 @@ public class Cuentas {
             d = i * i * i;
         }
         synchronized (this) {
-            c -= 1;
+            c -= 1; 
         }
     }
 

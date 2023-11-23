@@ -10,6 +10,7 @@ public class CarreraHilos {
         //Object salida = new Object();
         for (int i = 0; i < CANTIDAD_CORREDORES; i++) {
             threadArray[i] = new Thread(new Corredor(KILOMETROS, i));
+            threadArray[i].start();
         }
         /*
          * Thread facu = new Thread(new Corredor(100, 0));
@@ -19,9 +20,7 @@ public class CarreraHilos {
          * facu.join();
          * fausto.join();
          */
-        for (int i = 0; i < CANTIDAD_CORREDORES; i++) {
-            threadArray[i].start();
-        }
+       
         Thread.sleep(1000);
         synchronized (Corredor.salida) {
             Corredor.salida.notifyAll();
