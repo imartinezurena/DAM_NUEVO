@@ -71,7 +71,7 @@ int main(){
         printf("Introduce el primer numero: \n");
         scanf("%d", &n1);
         printf("Introduce el operando: \n");
-        scanf("%s", &operando);
+        scanf("%s", operando);
         printf("Introduce el segundo numero: \n");
         scanf("%d", &n2);
 
