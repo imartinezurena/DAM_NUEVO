@@ -127,7 +127,7 @@ int main()
             close(pipe2[WRITE]); // Cerrar el descriptor de escritura después de escribir
             read(pipe3[READ], &frase1, sizeof(frase1));
             read(pipe3[READ], &frase2, sizeof(frase2));
-            // printf("%s", frase2);
+            printf("%s", frase1);
             close(pipe3[READ]);
             fprintf(stdout, "%s", frase1);
             waitpid(child1, NULL, 0);
