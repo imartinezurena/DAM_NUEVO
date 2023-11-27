@@ -40,7 +40,8 @@ int main()
         return 1;
     }
     else if (child1 == 0)
-    {
+    {   
+        sleep(10);    
         close(pipe1[WRITE]); // El hijo no escribirá en el pipe, así que cerramos el descriptor de escritura
         int numero;
         while (read(pipe1[READ], &numero, sizeof(numero)) > 0)
