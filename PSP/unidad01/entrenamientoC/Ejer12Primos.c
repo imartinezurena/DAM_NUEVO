@@ -49,10 +49,10 @@ int realizarTrabajoDeHijo(int soy_hijo, int n_procesos, int nIntroducido)
             {
                 printf("El numero %d es primo\n", i);
             }
-            else
+           /* else
             {
                 printf("El numero %d no es primo\n", i);
-            }
+            }*/
         }
     }
     return 0;
