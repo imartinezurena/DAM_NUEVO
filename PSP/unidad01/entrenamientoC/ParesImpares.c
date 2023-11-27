@@ -41,7 +41,7 @@ int main()
     }
     else if (child1 == 0)
     {   
-        sleep(10);    
+        sleep(1);    
         close(pipe1[WRITE]); // El hijo no escribirá en el pipe, así que cerramos el descriptor de escritura
         int numero;
         while (read(pipe1[READ], &numero, sizeof(numero)) > 0)
@@ -97,7 +97,8 @@ int main()
             close(pipe2[WRITE]); // Cerrar el descriptor de escritura después de escribir
         }
         // Esperar a que los procesos hijos terminen
-        waitpid(child1, child2);
+        waitpid(child1);
+        waitpid(child2);
     }
 
     return 0;
