@@ -51,7 +51,14 @@ select * from user_objects;
 --ejercicio 8
 select * from user_nested_tables;
 --ejercicio 9
-
+SELECT
+        lista.tipo,
+        lista.numero
+    FROM
+        cliente210            cli,
+        TABLE ( cli.telf )       lista
+    WHERE
+        cli.id_cli = 3;
 --ejercicio 10
 DECLARE 
 telefono_nuevos cliente210.telf%type;

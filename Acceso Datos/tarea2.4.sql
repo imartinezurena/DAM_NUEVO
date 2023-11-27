@@ -4,7 +4,7 @@ CREATE OR REPLACE TYPE type_triangulo AS OBJECT (
     altura   number,
     MEMBER FUNCTION area RETURN NUMBER
 );
-CREATE OR REPLACE TYPE BODY type_triangulo AS
+
     MEMBER FUNCTION area RETURN NUMBER IS
     BEGIN
         RETURN ( base * altura) / 2;
