@@ -6,6 +6,7 @@ Al gestionar la señal el hijo escribirá "Recibido y terminará el proceso."*/
 #include <fcntl.h>
 #include <string.h>
 #include <signal.h>
+#include <stdbool.h>
 void manejador_senales(int senal)
 {
     pid_t hijo = fork();
@@ -25,7 +26,7 @@ void manejador_senales(int senal)
 int main()
 {
     signal(SIGUSR1, manejador_senales);
-    while (1)
+    while (true)
     {
         sleep(1);
     }

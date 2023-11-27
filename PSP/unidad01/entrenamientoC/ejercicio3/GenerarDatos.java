@@ -13,18 +13,18 @@ public class GenerarDatos {
         int numeroDatos = Integer.parseInt(args[0]);
         if (numeroDatos > 0) {
             for (int i = 1; i <= numeroDatos; i++) {
-                //String n_archivo = "datos" + i + ".txt";
+                // String n_archivo = "datos" + i + ".txt";
                 // tienes que hacer una clase java que reciba un numero y genere las
                 // combinaciones de letras de ese numero
                 // Y ejecutas java Clase N || echo > archivoNum.txt
                 String[] commands = {
                         // comando para ejecutar la clase java
-                        "java", "unidad01.entrenamientoC.ejercicio3.EscribirDatos",Integer.toString(i)//,
+                        "java", "unidad01.entrenamientoC.ejercicio3.EscribirDatos", Integer.toString(i)// ,
                         // redirigir el system.out.print
-                      //  ">",
+                        // ">",
                         // nombre del archivo donde va
-                      //  n_archivo 
-                    };
+                        // n_archivo
+                };
 
                 ProcessBuilder pb = new ProcessBuilder(commands);
                 pb.inheritIO();
