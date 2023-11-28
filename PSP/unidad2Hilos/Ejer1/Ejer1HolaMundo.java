@@ -13,7 +13,10 @@ public class Ejer1HolaMundo {
 
         Thread hiloRunnable = new Thread(new HiloRunnable());
         hiloRunnable.start();
-
+        /*
+         * HiloRunnable ho = new HiloRunnable();
+         * Thread hiloRunnable = new Thread(ho);
+         */
         Runnable runnable = () -> {
             System.out.println("Hola mundo desde Lambda runnable");
         };
