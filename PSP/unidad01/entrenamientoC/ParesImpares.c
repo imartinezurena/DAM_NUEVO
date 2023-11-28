@@ -9,8 +9,7 @@ Los hijos escribirán por pantalla "Soy el hijo 1|2, he recibido ". Por cada nú
 #include <string.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-#include<stdbool.h>
-
+#include <stdbool.h>
 
 #define READ 0
 #define WRITE 1
@@ -25,10 +24,14 @@ int main()
     int pipe2[2];
     int pipe3[2];
     pid_t child1, child2;
-    
+
     int numero;
     int resultadoOperacion = 0;
     char cadenita[BUFFER];
+    char frase2[BUFFER];
+    char frase1[BUFFER];
+    char cadenaResultadoPares[BUFFER] = "el resultado de la suma de los pares es ";
+    char cadenaResultadoImpares[BUFFER] = "el resultado de la suma de los impares es ";
 
     // Crear un pipe
     if (pipe(pipe1) == -1)
@@ -70,9 +73,8 @@ int main()
         }
         close(pipe1[READ]); // Cerrar el descriptor de lectura después de leer
         sprintf(cadenita, " %d", resultadoOperacion);
-        // strcat(cadenaResultado, cadenita);
-        //char cadenaResultado[BUFFER] = "el resultado de la suma es: ";
-        write(pipe3[WRITE], &resultadoOperacion, sizeof(resultadoOperacion));
+        strcat(cadenaResultadoPares, cadenita);
+        write(pipe3[WRITE], &cadenaResultadoPares, sizeof(cadenaResultadoPares));
         close(pipe3[WRITE]);
         exit(0);
     }
@@ -102,10 +104,9 @@ int main()
                 resultadoOperacion += numero;
             }
             close(pipe2[READ]); // Cerrar el descriptor de lectura después de leer
-            // sprintf(cadenita, "%d", resultadoOperacion);
-            // strcat(cadenaResultado, cadenita);
-            char frase2[BUFFER]  ;
-            //write(pipe3[WRITE], &frase2, sizeof(frase2));
+            sprintf(cadenita, "%d", resultadoOperacion);
+            strcat(cadenaResultadoImpares, cadenita);
+            write(pipe3[WRITE], &cadenaResultadoImpares, sizeof(cadenaResultadoImpares));
             close(pipe3[WRITE]);
             exit(0);
         }
@@ -119,34 +120,30 @@ int main()
                 numero = rand() % 100;
                 if (numero % 2 == 0)
                 {
-
                     // Escribimos los números en el pipe
                     write(pipe1[WRITE], &numero, sizeof(numero));
                 }
                 else
                 {
-
                     // Escribimos los números en el pipe
                     write(pipe2[WRITE], &numero, sizeof(numero));
                 }
             }
-           
-            char frase1[BUFFER];
-            char frase2[BUFFER];
 
             close(pipe1[WRITE]); // Cerrar el descriptor de escritura después de escribir
             close(pipe2[WRITE]); // Cerrar el descriptor de escritura después de escribir
-            
-            read(pipe3[READ], &resultadoOperacion, sizeof(resultadoOperacion));
-            //read(pipe3[READ], &frase2, sizeof(frase2));
-            printf("%s", frase1);
+
+            read(pipe3[READ], &frase1, sizeof(frase1));
+            read(pipe3[READ], &frase2, sizeof(frase2));
+
             close(pipe3[READ]);
-            fprintf(stdout, "%s", frase1);
-            waitpid(child1, NULL, 0);
+
+            fprintf(stdout, "%s\n", frase1);
+
+            fprintf(stdout, "%s\n", frase2);
+            waitpid(child1, NULL, 0); // Esperar a que los procesos hijos terminen
             waitpid(child2, NULL, 0);
-            
         }
-        // Esperar a que los procesos hijos terminen
     }
 
     return 0;
