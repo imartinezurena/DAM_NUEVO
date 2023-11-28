@@ -15,7 +15,7 @@ public class Ejer1HolaMundo {
         hiloRunnable.start();
 
         Runnable runnable = () -> {
-            System.out.println("Hola mundo desde Lamba runnable");
+            System.out.println("Hola mundo desde Lambda runnable");
         };
         runnable.run();
     }
