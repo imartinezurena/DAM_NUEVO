@@ -37,7 +37,8 @@ public class Animales implements Runnable {
         int max = 300000;
 
         Random r = new Random();
-        int aleatorio = r.nextInt(max - min + 1) + min;
+        int aleatorio = r.nextInt(max - min + 1) + min;// 300000-100000+1=2000001 solo esto seria de 0 a 2000001 , le
+                                                       // sumamos el min y es del minimo al max
         return aleatorio;
     }
 
