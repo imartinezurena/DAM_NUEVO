@@ -27,7 +27,6 @@ public class GenerarDatos {
                 };
 
                 ProcessBuilder pb = new ProcessBuilder(commands);
-
                 pb.inheritIO();
                 try {
                     Process proceso = pb.start();
