@@ -80,9 +80,66 @@ tipo_contacto('647334567', 'goku@facu.com'),
 0
 );
 --ejercicio 10
+CREATE TABLE compras OF tipo_lista_compra
+NESTED TABLE detalle STORE AS detalle_anidada;
 
+INSERT INTO compras VALUES (
+    1,
+    (
+        SELECT
+            ref(c)
+        FROM
+            clientes c
+        WHERE
+            iden = 1
+    ),
+    tipo_lista_detalle(4, tipo_articulo(1, 'nachos', 'nachos con sabor a queso', 2, 21), 4)
+);
+
+INSERT INTO compras VALUES (
+    1,
+    (
+        SELECT
+            ref(c)
+        FROM
+            clientes c
+        WHERE
+            iden = 1
+    ),
+    tab_lista_detalle(tipo_lista_detalle(1, tipo_articulo(1, 'nachos', 'nachos con sabor a queso', 2, 21), 4),
+                      tipo_lista_detalle(2, tipo_articulo(2, 'patatas', 'receta original con menos aceite', 1.9, 21), 3))
+);
 --ejercicio 11
-select * from compras;
+select * from compras; 
+--o
+SELECT
+    identificador,
+    c.cliente.nombre,
+    d.numero,
+    d.articulo.nombre,
+    d.numero,
+    d.articulo.precio,
+    d.numero,
+    d.articulo.porcentaje_iva,
+    d.cantidad
+FROM
+    compras                c,
+    TABLE ( c.detalle )       d;
 --ejercicio 12
+DECLARE
+    lista tipo_lista_compra := tipo_lista_compra(NULL, NULL, NULL);
+BEGIN
+    SELECT
+        *
+    INTO
+        lista.identificador,
+        lista.cliente,
+        lista.detalle
+    FROM
+        compras c
+    WHERE
+        c.cliente.iden = 1;
 
+    dbms_output.put_line(lista.calcular_total);
+END;
 
