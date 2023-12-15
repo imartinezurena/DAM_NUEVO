@@ -29,7 +29,7 @@ session_start();
 if (count($_POST) == 0) {
   $_SESSION["intentos"] = 5;
   //$_SESSION["clave"]=rand(1,100);
-  
+
 }
 
 
@@ -39,6 +39,7 @@ if (isset($_POST["password"])) {
   // Verificamos si la contrasseña es correcta
   if ($pw == $_POST["password"]) {
     // Lanzamos otra página
+    $_SESSION ["login"]="ok";
     header("Location: ejer.php");
     // Matamos la principal
     die();

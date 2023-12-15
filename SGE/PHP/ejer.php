@@ -1,3 +1,6 @@
+<?php
+require("requireLogin.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +9,9 @@
     <title>Document</title>
 </head>
 <body>
-hola mundo    
+<h1>hola mundo    </h1>
+<a href="CerrarSesion.php">cerrar sesion</a>
+
 </body>
+
 </html>
-
-<?php
-/*5 intentos y me dice si he acertado o si he agotado mis intentos*/
-
-
-?>
