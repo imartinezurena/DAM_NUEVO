@@ -1,0 +1,3 @@
+Adjunto la carpeta que posee el código java de todas las clases necesarias para la realización del modelo DAO.
+
+He modificado el interfaz para que también pida la fecha en el método getNuevoAlumno(), dado que en el documento en la definición no la solicita pero en el método final si
