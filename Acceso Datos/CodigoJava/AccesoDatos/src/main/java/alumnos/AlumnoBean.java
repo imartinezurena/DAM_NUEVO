@@ -65,7 +65,7 @@ public class AlumnoBean implements AlumnoInterface {
         }
         Connection con = null;
         try {
-            String url = "jdbc:mysql://localhost:3306/accesoADatos";
+            String url = "jdbc:mysql://localhost:3306/alumno";
             con = (Connection) DriverManager.getConnection(url, "root", "");
         } catch (SQLException e) {
             System.err.println("No se puede obtener la conexcion");
