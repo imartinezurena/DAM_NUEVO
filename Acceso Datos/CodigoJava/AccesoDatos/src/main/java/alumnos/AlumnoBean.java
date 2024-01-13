@@ -65,7 +65,7 @@ public class AlumnoBean implements AlumnoInterface {
         }
         Connection con = null;
         try {
-            String url = "jdbc:mysql://localhost:3306/alumno";
+            String url = "jdbc:mysql://localhost:3306/alumnos";
             con = (Connection) DriverManager.getConnection(url, "root", "");
         } catch (SQLException e) {
             System.err.println("No se puede obtener la conexcion");
@@ -101,18 +101,20 @@ public class AlumnoBean implements AlumnoInterface {
 
     @Override
     public void setNombre(String nombre) {
-        /*try {
-            conexcion = getConexion();
-            PreparedStatement pst;
-            pst = conexcion.prepareCall("update ALUMNO set nombre=? where numexpdte=? ");
-            pst.setString(1, nombre);
-            pst.setString(2, this.numExpdte);
-            pst.executeUpdate();
-            conexcion.close();
-            this.nombre=nombre;
-        } catch (SQLException ex) {
-            System.out.println("Error al actualizar el alumno");
-        }*/
+        /*
+         * try {
+         * conexcion = getConexion();
+         * PreparedStatement pst;
+         * pst = conexcion.prepareCall("update ALUMNO set nombre=? where numexpdte=? ");
+         * pst.setString(1, nombre);
+         * pst.setString(2, this.numExpdte);
+         * pst.executeUpdate();
+         * conexcion.close();
+         * this.nombre=nombre;
+         * } catch (SQLException ex) {
+         * System.out.println("Error al actualizar el alumno");
+         * }
+         */
         if (setCosas("nombre", nombre)) {
             this.nombre = nombre;
         }
@@ -249,11 +251,11 @@ public class AlumnoBean implements AlumnoInterface {
             pst.setString(5, ciclo);
             pst.executeUpdate();
             conexcion.close();
-            this.ciclo=ciclo;
-            this.dni=dni;
-            this.nombre=nombre;
-            this.numExpdte=numExpdte;
-            this.fecha=fecha;
+            this.ciclo = ciclo;
+            this.dni = dni;
+            this.nombre = nombre;
+            this.numExpdte = numExpdte;
+            this.fecha = fecha;
         } catch (SQLException ex) {
             System.out.println("Error SQL al insertar Alumno" + ex.getMessage());
         }
