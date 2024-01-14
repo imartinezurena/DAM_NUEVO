@@ -35,14 +35,15 @@ int esPrimo(int numero)
 }
 int main(int argc, char *argv[])
 {
-
+    int mensaje;
+    srand((unsigned int)time(NULL));
     int longitud = atoll(argv[2]);
     int cantidad = atoll(argv[1]);
-    int nProcesos = 2;
-    bool muertePorPrimo = false;
     pid_t child1, child2;
     int fd1[2];
     int fd2[2];
+    int minimoAleatorio = pow(10, longitud - 1);
+    int maximoAleatorio = pow(10, longitud) - 1;
 
     // misma formula de siempre para el pipe
     if (pipe(fd1) == -1)
@@ -66,18 +67,22 @@ int main(int argc, char *argv[])
     else if (child1 == 0) // codigo del primer hijo
     {
         int numeroRecibido;
+        close(fd2[WRITE]);
+        close(fd2[READ]);
         close(fd1[WRITE]);
         while (read(fd1[READ], &numeroRecibido, sizeof(numeroRecibido)) > 0)
         {
-            read(fd1[READ], &numeroRecibido, sizeof(numeroRecibido));
-            printf("el numero recibido es %d\n", numeroRecibido);
+
+            printf("el hijo 1: numero recibido es %d\n", numeroRecibido);
 
             if (esPrimo(numeroRecibido))
             {
                 printf("y es primo\n");
             }
+            sleep(2);
         }
         close(fd1[READ]);
+        exit(EXIT_SUCCESS);
     }
     else
     {
@@ -91,42 +96,42 @@ int main(int argc, char *argv[])
         {
 
             int numeroRecibido;
+            close(fd1[WRITE]);
+            close(fd1[READ]);
             close(fd2[WRITE]);
             while (read(fd2[READ], &numeroRecibido, sizeof(numeroRecibido)) > 0)
             {
-                read(fd2[READ], &numeroRecibido, sizeof(numeroRecibido));
-                printf("el numero recibido es %d\n", numeroRecibido);
+
+                printf("hijo 2:el numero recibido es %d\n", numeroRecibido);
                 if (esPrimo(numeroRecibido))
                 {
                     printf("y es primo\n");
                 }
             }
             close(fd2[READ]);
+            exit(EXIT_SUCCESS);
         }
         else // codigo del padre
         {
-            int mensaje;
-            int minimoAleatorio = pow(10, longitud - 1);
-            int maximoAleatorio = pow(10, longitud) - 1;
+
             close(fd1[READ]);
             close(fd2[READ]);
             for (int i = 1; i <= cantidad; i++)
             {
-                mensaje = rand() % (maximoAleatorio - minimoAleatorio + 1) + minimoAleatorio;
-                if (i > cantidad / 2)
+                if (i % 2 == 0)
                 {
+                    mensaje = rand() % (maximoAleatorio - minimoAleatorio + 1) + minimoAleatorio;
                     // Escribimos los números en el pipe
                     write(fd1[WRITE], &mensaje, sizeof(mensaje));
                 }
                 else
                 {
+                    mensaje = rand() % (maximoAleatorio - minimoAleatorio + 1) + minimoAleatorio;
                     // Escribimos los números en el pipe
                     write(fd2[WRITE], &mensaje, sizeof(mensaje));
                 }
             }
 
-            write(fd1[WRITE], &mensaje, sizeof(mensaje));
-            write(fd2[WRITE], &mensaje, sizeof(mensaje));
             close(fd1[WRITE]);
             close(fd2[WRITE]);
             waitpid(child1, NULL, 0); // Esperar a que los procesos hijos terminen
