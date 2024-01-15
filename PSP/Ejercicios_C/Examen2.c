@@ -27,14 +27,14 @@ void handlerSigint(int senal)
 {
 
     printf("soy el hijo %d  y termino\n", getpid());
+    exit(EXIT_SUCCESS);
 }
 int main(int argc, char *argv[])
 {
     int hijoDestino;
-    int cantidadProcesosHijos = atoll(argv[1]);
-    int numeroSenales = atoll(argv[2]);
+    int cantidadProcesosHijos = atoi(argv[1]);
+    int numeroSenales = atoi(argv[2]);
     pid_t conjuntoHijos[cantidadProcesosHijos];
-    printf("%d\n", numeroSenales);
 
     for (int i = 0; i < cantidadProcesosHijos; i++)
     {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
             signal(SIGINT, handlerSigint);
             while (1)
             {
-
+                // printf("hola, soy %d\n", getpid());
                 sleep(1);
             }
             exit(EXIT_SUCCESS);
@@ -60,16 +60,17 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < numeroSenales; i++)
     {
-        // srand((unsigned int)time(NULL));
+        srand((unsigned int)time(NULL));
         hijoDestino = rand() % cantidadProcesosHijos;
         // printf("Hijo muerto: %d\n", conjuntoHijos[i]);
         kill(conjuntoHijos[hijoDestino], SIGUSR1); // Enviar señal a cada hijo
         //  Esperar a que cada hijo termine
+        sleep(4);
     }
-    /*for (int i = 0; i < cantidadProcesosHijos; i++)
+    for (int i = 0; i < cantidadProcesosHijos; i++)
     {
         kill(conjuntoHijos[i], SIGINT);
-    }*/
+    }
     for (int i = 0; i < cantidadProcesosHijos; i++)
     {
         wait(NULL);

@@ -24,8 +24,10 @@ int esPrimo(int numero)
     }
     return 1; // El número es primo
 }
-int main(int argc, char *argv[]) {
-    if (argc < 3) {
+int main(int argc, char *argv[])
+{
+    if (argc < 3)
+    {
         fprintf(stderr, "ERROR. Introduce: %s num1 num2\n", argv[0]);
         return 1;
     }
@@ -35,31 +37,39 @@ int main(int argc, char *argv[]) {
     int contadorPrimos = 0;
     int nProcesos = 2;
 
-    for (int i = 0; i < nProcesos; i++) {
+    for (int i = 0; i < nProcesos; i++)
+    {
         pid_t hijo = fork();
 
-        if (hijo < 0) {
+        if (hijo < 0)
+        {
             perror("Error al crear el proceso hijo");
             return 1;
         }
 
-        if (hijo == 0) {
+        if (hijo == 0)
+        {
             // Código del hijo
             int num = (i == 0) ? num1 : num2; // Determina cuál número procesa cada hijo
-            if (esPrimo(num)) {
+            if (esPrimo(num))
+            {
                 exit(ES_PRIMO);
-            } else {
+            }
+            else
+            {
                 exit(NO_ES_PRIMO);
             }
         }
     }
 
-    for (int i = 0; i < nProcesos; i++) {
+    for (int i = 0; i < nProcesos; i++)
+    {
         // Código del padre
         int status;
         wait(&status);
 
-        if (WIFEXITED(status) && WEXITSTATUS(status) == ES_PRIMO) {
+        if (WIFEXITED(status) && WEXITSTATUS(status) == ES_PRIMO)
+        {
             contadorPrimos++;
         }
     }
