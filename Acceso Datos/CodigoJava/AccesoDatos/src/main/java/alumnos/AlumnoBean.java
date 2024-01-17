@@ -68,7 +68,7 @@ public class AlumnoBean implements AlumnoInterface {
             String url = "jdbc:mysql://localhost:3306/alumnos";
             con = (Connection) DriverManager.getConnection(url, "root", "");
         } catch (SQLException e) {
-            System.err.println("No se puede obtener la conexcion");
+            System.err.println("No se puede obtener la conexion");
             return null;
         }
         return con;
@@ -145,7 +145,7 @@ public class AlumnoBean implements AlumnoInterface {
     @Override
     public AlumnoInterface getAlumnoPorNumexpdte(String numExpdte) {
 
-        AlumnoBean alumno = null;
+        AlumnoBean alumno = new AlumnoBean();
         try {
             conexcion = getConexion();
             PreparedStatement pst;
@@ -222,7 +222,7 @@ public class AlumnoBean implements AlumnoInterface {
         try {
             conexcion = getConexion();
             PreparedStatement pst;
-            pst = conexcion.prepareCall("delete from ALUMNO where numexpdt=?");
+            pst = conexcion.prepareCall("delete from alumno where numexpdte=?");
             pst.setString(1, this.numExpdte);
             pst.executeUpdate();
             conexcion.close();
