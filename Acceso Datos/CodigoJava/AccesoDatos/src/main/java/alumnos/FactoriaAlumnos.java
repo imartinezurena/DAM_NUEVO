@@ -9,11 +9,11 @@ package alumnos;
  * @author pcundo
  */
 public class FactoriaAlumnos {
-    
-    //metodo estatico que devuelve un obj alumnointerfaz
-    
-    public static AlumnoInterface getAlumnoDao(){
-    return new AlumnoBean();
+
+    // metodo estatico que devuelve un obj alumnointerfaz
+
+    public static AlumnoInterface getAlumnoDao() {
+        return new AlumnoBean();
     }
-    
+
 }
