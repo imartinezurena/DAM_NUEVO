@@ -1,65 +1,82 @@
 package Practica6;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import javax.xml.xpath.*;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
 
 public class Ejercicio5Practica6 {
     public static void main(String[] args) {
         try {
-            // Cargar el documento de universidad.xml
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse("universidad.xml");
+            // Ejercicio a)
+            System.out.println("Ejercicio a):");
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document universidadDoc = builder.parse(new File("universidad.xml"));
+            NodeList departamentosList = universidadDoc.getElementsByTagName("departamento");
 
-            // Crear un objeto XPath
-            XPath xpath = XPathFactory.newInstance().newXPath();
+            for (int i = 0; i < departamentosList.getLength(); i++) {
+                Element departamento = (Element) departamentosList.item(i);
+                String nombreDepartamento = departamento.getElementsByTagName("nombre").item(0).getTextContent();
+                NodeList empleadosList = departamento.getElementsByTagName("empleado");
 
-            // Obtener nodos de departamento
-            NodeList departamentosNodeList = doc.getElementsByTagName("departamento");
-
-            // Iterar sobre los nodos de departamento
-            for (int i = 0; i < departamentosNodeList.getLength(); i++) {
-                org.w3c.dom.Node departamentoNode = departamentosNodeList.item(i);
-                String nombreDepartamento = obtenerValorPorTag(departamentoNode, "nombre");
-
-                // Imprimir el nombre del departamento
                 System.out.println("Departamento: " + nombreDepartamento);
+                for (int j = 0; j < empleadosList.getLength(); j++) {
+                    Element empleado = (Element) empleadosList.item(j);
+                    String puesto = empleado.getElementsByTagName("puesto").item(0).getTextContent();
+                    System.out.println("Puesto: " + puesto);
+                }
+                System.out.println("--------------------");
+            }
 
-                // Obtener nodos de empleado para el departamento actual
-                NodeList empleadosNodeList = ((org.w3c.dom.Element) departamentoNode).getElementsByTagName("empleado");
+            // Ejercicio b)
+            System.out.println("\nEjercicio b):");
+            NodeList departamentosList2 = universidadDoc.getElementsByTagName("departamento");
 
-                // Variables para almacenar el salario máximo y el empleado correspondiente
+            for (int i = 0; i < departamentosList2.getLength(); i++) {
+                Element departamento = (Element) departamentosList2.item(i);
+                String nombreDepartamento = departamento.getElementsByTagName("nombre").item(0).getTextContent();
+                NodeList empleadosList = departamento.getElementsByTagName("empleado");
                 double salarioMaximo = 0;
                 String empleadoSalarioMaximo = "";
 
-                // Iterar sobre los nodos de empleado
-                for (int j = 0; j < empleadosNodeList.getLength(); j++) {
-                    org.w3c.dom.Node empleadoNode = empleadosNodeList.item(j);
-                    double salario = Double.parseDouble(obtenerValorPorTag(empleadoNode, "salario"));
-
-                    // Verificar si el salario actual es el máximo
+                for (int j = 0; j < empleadosList.getLength(); j++) {
+                    Element empleado = (Element) empleadosList.item(j);
+                    double salario = Double.parseDouble(empleado.getAttribute("salario"));
                     if (salario > salarioMaximo) {
                         salarioMaximo = salario;
-                        empleadoSalarioMaximo = obtenerValorPorTag(empleadoNode, "nombre");
+                        empleadoSalarioMaximo = empleado.getElementsByTagName("nombre").item(0).getTextContent();
                     }
                 }
-
-                // Imprimir el salario máximo y el empleado correspondiente
-                System.out.println("  Salario Máximo: " + salarioMaximo);
-                System.out.println("  Empleado con Salario Máximo: " + empleadoSalarioMaximo);
-                System.out.println(); // Separador entre departamentos
+                System.out.println("Departamento: " + nombreDepartamento + ". Empleado con salario máximo: "
+                        + empleadoSalarioMaximo + ", Salario máximo: " + salarioMaximo);
             }
 
+            // Ejercicio c)
+            System.out.println("\nEjercicio c):");
+            NodeList oficios = universidadDoc.getElementsByTagName("puesto");
+
+            for (int i = 0; i < oficios.getLength(); i++) {
+                Element oficio = (Element) oficios.item(i);
+                String nombreOficio = oficio.getTextContent();
+                NodeList empleadosList = universidadDoc.getElementsByTagName("empleado");
+                double salarioMaximo = 0;
+                String empleadoSalarioMaximo = "";
+
+                for (int j = 0; j < empleadosList.getLength(); j++) {
+                    Element empleado = (Element) empleadosList.item(j);
+                    if (empleado.getElementsByTagName("puesto").item(0).getTextContent().equals(nombreOficio)) {
+                        double salario = Double.parseDouble(empleado.getAttribute("salario"));
+                        if (salario > salarioMaximo) {
+                            salarioMaximo = salario;
+                            empleadoSalarioMaximo = empleado.getElementsByTagName("nombre").item(0).getTextContent();
+                        }
+                    }
+                }
+                System.out.println("Oficio: " + nombreOficio + ". Empleado con salario máximo: " + empleadoSalarioMaximo
+                        + ", Salario máximo: " + salarioMaximo);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static String obtenerValorPorTag(org.w3c.dom.Node node, String tagName) {
-        NodeList nodeList = ((org.w3c.dom.Element) node).getElementsByTagName(tagName);
-        return nodeList.item(0).getTextContent();
     }
 }
